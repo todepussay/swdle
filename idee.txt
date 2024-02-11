@@ -1,0 +1,24 @@
+Swdle
+
+Mode de jeu :
+ - Trouver le perso 
+ - Trouver la compétence
+ - Juste prix (essence pour eveille, diablomon necessaire au skill up)
+ - Image du perso pixelisé
+
+Posibilité de rajouter un mod de jeu avec les boss de tous les donjons, laby,
+aventure, tartaros, rift etc
+
+Idée d'un summon par jour pour faire une collection de perso avec un compte
+
+A trouver : le nom du perso eveillé
+
+Indice :
+Etoile naturelle                    1,2,3,4,5
+Seconde eveillé                     Oui, Non
+Attribut                            Feu, Vent, Eau, Lumière, Ténébre
+Type de monstre                     Attaque, Support, Défense, HP, Material
+Leader skill                        Oui, Non
+Famille                             Nom non eveillé
+Fusion food                         Oui, non
+Date de sortie (pas dans la bdd)    Date
