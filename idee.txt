@@ -1,24 +1,33 @@
 Swdle
 
 Mode de jeu :
- - Trouver le perso 
- - Trouver la compétence
+ - Trouver le monstre (un monstre choisi au hasard et on doit trouver avec des indices)
+ - Trouver le boss (pareil mais avec un boss)
+ - Trouver la compétence (une compétence au hasard et il faut trouver le monstre)
  - Juste prix (essence pour eveille, diablomon necessaire au skill up)
  - Image du perso pixelisé
 
-Posibilité de rajouter un mod de jeu avec les boss de tous les donjons, laby,
-aventure, tartaros, rift etc
-
 Idée d'un summon par jour pour faire une collection de perso avec un compte
 
-A trouver : le nom du perso eveillé
 
-Indice :
+Indice pour trouver le monstre :
 Etoile naturelle                    1,2,3,4,5
 Seconde eveillé                     Oui, Non
 Attribut                            Feu, Vent, Eau, Lumière, Ténébre
 Type de monstre                     Attaque, Support, Défense, HP, Material
-Leader skill                        Oui, Non
 Famille                             Nom non eveillé
+Leader skill                        Oui, Non
 Fusion food                         Oui, non
-Date de sortie (pas dans la bdd)    Date
+
+Indice pour trouver le boss :
+Zone de boss                        Cairos, (Scénario), Toa, world boss, rift, laby, Passage des dimensions
+Boss obtenable                      Oui, non
+Loot                                Rune, Artéfact, essence, meule, gemme, autre
+Attribut                            Feu, Vent, Eau, Lumière, Ténébre, Autre
+
+
+
+Famille pas dans le jeu :
+- Dokkaebi Princess And Sapsaree
+- Dokkaebi Lord
+- Twin Angels
