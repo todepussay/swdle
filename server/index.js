@@ -22,7 +22,7 @@ cron.schedule(process.env.DAILY_PICK, () => {
 
 // Routes
 const router = require('./router');
-app.use('/api', router);
+app.use('/swdle/api', router);
 
 app.listen(port, () => {
   dailyUpdate();

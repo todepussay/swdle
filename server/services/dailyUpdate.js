@@ -14,6 +14,7 @@ function dailyUpdate(){
                 insert(result[0]);
             } else {
                 console.log('Daily update already done');
+                setDailyPick();
             }
         }
     })
