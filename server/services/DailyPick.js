@@ -21,7 +21,6 @@ const setDailyPick = () => {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log(result1);
                     dailyPick.daily_monster = result1[0];
                 }
             });

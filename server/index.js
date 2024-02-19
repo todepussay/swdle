@@ -25,5 +25,6 @@ const router = require('./router');
 app.use('/api', router);
 
 app.listen(port, () => {
+  dailyUpdate();
   console.log(`Server is running on port ${port}`);
 });
