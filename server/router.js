@@ -1,9 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const { getDailyPick } = require('./services/DailyPick');
+const { getMonsters } = require('./services/Monster');
+const { guessMonster } = require('./services/GuessMonster');
 
-router.get("/", (req, res) => {
-    res.send(getDailyPick());
-})
+router.get("/getAllMonsters", getMonsters);
+
+router.post("/guessMonster", guessMonster);
+
+router.get("/getDailyPick", (req, res) => {
+    const dailyPick = getDailyPick();
+    res.status(200).send(dailyPick);
+});
 
 module.exports = router;

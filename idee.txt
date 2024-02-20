@@ -19,6 +19,10 @@ Famille                             Nom non eveillé
 Leader skill                        Oui, Non
 Fusion food                         Oui, non
 
+Indice pour aider:
+Indice 1 (6) : Un skill du monstre au hasard
+Indice 2 (12) : Une image du monstre en noir et blanc pixelisé (7)
+
 Indice pour trouver le boss :
 Zone de boss                        Cairos, (Scénario), Toa, world boss, rift, laby, Passage des dimensions
 Boss obtenable                      Oui, non
