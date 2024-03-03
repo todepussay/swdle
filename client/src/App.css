@@ -1,38 +1,110 @@
-.App {
-  text-align: center;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  --dark-black: #2e2214;
+  --black: #47351f;
+  --yellow-light: #d9b76f;
+  --yellow-dark: #bb8e49;
+  --border-color: #977f53;
+  --white: #e7d6b4;
+  --modal-outside: #221107;
+  --modal-center: #513118;
+  --font-color: #ffda9d;
+  --font-shadow-color: #5d2d10;
+  --font-color-top: #f1eecf;
+  --font-color-bottom: #878674;
+  --background-nav: #30251e;
+  --input-background: #f7e7cd;
+  --button-inside: #29170d;
+  --good: #4caf50;
+  --bad: #f44336;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  background: var(--black);
+  background: linear-gradient(0deg, var(--black) 0%, var(--dark-black) 100%);
+  height: 100vh;
+  width: 100vw;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#root {
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
 }
 
-.App-link {
-  color: #61dafb;
+.App {
+  width: 80%;
+  height: 90%;
+  border: 10px solid var(--border-color);
+  box-shadow: inset 0px 10px 15px -3px rgba(0,0,0,0.1);
+  border-radius: 50px;
+  position: relative;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.corner {
+  position: absolute;
+  z-index: 100;
+}
+
+#corner-top-left {
+  top: -12px;
+  left: -12px;
+  transform: rotate(-90deg);
+}
+
+#corner-top-right {
+  top: -12px;
+  right: -12px;
+}
+
+#corner-bottom-left {
+  bottom: -12px;
+  left: -12px;
+  transform: rotate(180deg);
+}
+
+#corner-bottom-right {
+  bottom: -12px;
+  right: -12px;
+  transform: rotate(90deg);
+}
+
+.content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+
+.game {
+  background: var(--modal-center);
+  background: radial-gradient(circle, var(--modal-center) 60%, var(--modal-outside) 100%);
+  width: 70%;
+  height: 90%;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  -webkit-border-radius: 10px;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--font-shadow-color); 
 }

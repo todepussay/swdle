@@ -8,9 +8,10 @@ const guessMonster = async (req, res) => {
 
     db.query(
         `
-        SELECT * 
-        FROM monster
-        WHERE id = ?
+        SELECT m.*, f.name as family
+        FROM monster m
+        INNER JOIN family f ON m.family_id = f.id
+        WHERE m.id = ?
         `,
         [monster_id],
         (err, result) => {
@@ -34,46 +35,40 @@ const guessMonster = async (req, res) => {
                         let obj = {
                             correct: false,
                             date: dailyPick.date,
+                            indice: {},
+                            try: number_try,
                             information: {
-                                natural_stars: monster.natural_stars === dailyPick.natural_stars,
+                                name_monster: monster.name,
+                                image_monster: monster.image_filename,
+                                natural_stars_monster: monster.natural_stars,
+                                natural_stars_good: monster.natural_stars === dailyPick.natural_stars,
                                 natural_stars_more: monster.natural_stars < dailyPick.natural_stars,
                                 natural_stars_less: monster.natural_stars > dailyPick.natural_stars,
-                                second_awakened: monster.awaken_level === dailyPick.awaken_level,
-                                element: monster.element === dailyPick.element,
-                                archetype: monster.archetype === dailyPick.archetype,
-                                family: monster.family_id === dailyPick.family_id,
-                                leader_skill: monster.leader_skill === dailyPick.leader_skill,
-                                fusion_food: monster.fusion_food === dailyPick.fusion_food
+                                second_awakened_monster: monster.awaken_level == 1 ? false : true,
+                                second_awakened_good: monster.awaken_level == dailyPick.awaken_level,
+                                element_monster: monster.element,
+                                element_good: monster.element === dailyPick.element,
+                                archetype_monster: monster.archetype,
+                                archetype_good: monster.archetype === dailyPick.archetype,
+                                family_monster_id: monster.family_id,
+                                family_monster_name: monster.family,
+                                family_good: monster.family_id === dailyPick.family_id,
+                                leader_skill_monster: monster.leader_skill === 1 ? true : false,
+                                leader_skill_good: monster.leader_skill === dailyPick.leader_skill,
+                                fusion_food_monster: monster.fusion_food === 1 ? true : false,
+                                fusion_food_good: monster.fusion_food === dailyPick.fusion_food
                             }
                         }
 
-                        switch(number_try){
-                            case 6:
-                                db.query(
-                                    `
-                                    SELECT 
-                                        s.icon_filename as image 
-                                    FROM 
-                                        skill s 
-                                    INNER JOIN monster_skill ms ON ms.skill_id = s.id 
-                                    WHERE ms.monster_id = ?
-                                    ORDER BY RAND() 
-                                    LIMIT 1
-                                    `,
-                                    [monster_id],
-                                    (err, result) => {
-                                        if(err){
-                                            console.log(err);
-                                            res.status(500).send("Internal server error");
-                                        } else {
-                                            obj.skill = result[0];
-                                            res.status(200).json(obj);
-                                        }
-                                    }
-                                )
+                        if(number_try >= 6){
+                            obj.indice["indice1"] = dailyPick.indice_skill;
+                        } 
+
+                        if(number_try >= 12){
+                            obj.indice["indice2"] = dailyPick.image_filename;
                         }
 
-                        // res.status(200).json()
+                        res.status(200).json(obj);
                     }
 
                 }

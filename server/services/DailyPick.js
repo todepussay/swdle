@@ -22,6 +22,16 @@ const setDailyPick = () => {
                     console.log(err);
                 } else {
                     dailyPick.daily_monster = result1[0];
+
+                    db.query(`SELECT icon_filename as image FROM skill WHERE id = ?`, 
+                    [result[0].monster_daily_pick_indice_skill], 
+                    (err, result2) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            dailyPick.daily_monster.indice_skill = result2[0].image;
+                        }
+                    })
                 }
             });
 

@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import React, { useEffect } from "react";
+import Header from "./components/Header";
+import Nav from "./components/Nav";
+import corner from "./asset/corner.png";
+import Home from "./pages/Home";
+import Classic from "./pages/Classic";
+import Skill from "./pages/Skill";
+import Pixel from "./pages/Pixel";
 
 function App() {
+  
+  const [onglet, setOnglet] = React.useState("classic");
+
+  useEffect(() => {
+    if(onglet === "home" && window.location.pathname !== "/"){
+      window.location.pathname = "/";
+    }
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+      <img src={corner} alt="Corner top left" className="corner" id="corner-top-left" />
+      <img src={corner} alt="Corner top right" className="corner" id="corner-top-right" />
+      <img src={corner} alt="Corner bottom right" className="corner" id="corner-bottom-right" />
+      <img src={corner} alt="Corner bottom left" className="corner" id="corner-bottom-left" />
+      
+      <div className="content">
+        <Header onglet={onglet} />
+        <Nav onglet={onglet} setOnglet={(e) => {setOnglet(e)}} />
+
+        <div className="game">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/classic" element={<Classic />} />
+            <Route path="/skill" element={<Skill />} />
+            <Route path="/pixel" element={<Pixel />} />
+          </Routes>
+        </div>
+      </div>
     </div>
   );
 }
+
 
 export default App;
