@@ -51,3 +51,18 @@ a span {
     -webkit-text-fill-color: transparent;
     -webkit-text-stroke-color: var(--font-shadow-color);
 }
+
+@media (max-width: 1700px) {
+
+    a img {
+        width: 70px;
+        height: 70px;
+    
+    }
+
+    a span {
+        font-size: 25px;
+        font-weight: 800;
+        -webkit-text-stroke-width: 1.5px;
+    }
+}

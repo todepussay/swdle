@@ -22,3 +22,10 @@ h1, h2 {
     -webkit-text-stroke-color: var(--font-shadow-color);
 }
   
+@media (max-width: 1700px) {
+    h1, h2 {
+        font-size: 40px;
+        font-weight: 800;
+        -webkit-text-stroke-width: 2px;
+    }
+}

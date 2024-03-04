@@ -113,6 +113,7 @@
     border: 6px solid var(--font-shadow-color);
     max-height: 700px;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 hr {
@@ -144,7 +145,7 @@ hr {
     width: 95%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
 }
 
@@ -157,9 +158,11 @@ hr {
     border-radius: 20px;
     cursor: pointer;
     border: 3px solid var(--font-shadow-color);
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
 }
 
 .family .monsters .monster .monster-name {
+    text-align: center;
     font-size: 25px;
     font-weight: 900;
     letter-spacing: -1px;
@@ -170,11 +173,18 @@ hr {
     -webkit-text-stroke-color: var(--font-shadow-color);
 }
 
+.family .monsters .monster img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+}
+
 .propostion-monster {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-evenly;
     flex-wrap: wrap;
     gap: 10px;
 
@@ -190,6 +200,7 @@ hr {
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
 }
 
 .monster .monster-name {
@@ -201,6 +212,13 @@ hr {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     -webkit-text-stroke-color: var(--font-shadow-color);
+}
+
+.monster img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
 }
 
 table {
@@ -300,5 +318,53 @@ td span {
     .family .monsters .monster img {
         width: 80px;
         height: 80px;
+    }
+}
+
+@media (max-width: 1700px){
+    .indice span {
+        -webkit-text-stroke-width: 0.8px;
+    }
+
+    .indice img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .search-zone {
+        margin-top: 20px;
+    }
+
+    .search-zone input {
+        font-size: 25px;
+    }
+
+    .proposition {
+        max-height: 350px;
+    }
+
+    .family .family-name {
+        font-size: 25px;
+        -webkit-text-stroke-width: 1px;
+    }
+
+    .family .monsters .monster .monster-name {
+        font-size: 17px;
+        -webkit-text-stroke-width: 1px;
+    }
+
+    .family .monsters .monster img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .monster .monster-name {
+        font-size: 17px;
+        -webkit-text-stroke-width: 1px;
+    }
+
+    .monster img {
+        width: 60px;
+        height: 60px;
     }
 }

@@ -108,3 +108,10 @@ body {
 ::-webkit-scrollbar-thumb {
   background: var(--font-shadow-color); 
 }
+
+@media (max-width: 1700px) {
+  .App {
+    height: 95%;
+    width: 95%;
+  }
+}

@@ -40,14 +40,14 @@ export default function Classic() {
             if (searchMode === "family") {
                 setProposition(
                     families.filter((family) => {
-                        return family.family_name.toLowerCase().includes(valeur.toLowerCase());
+                        return family.family_name.toLowerCase().startsWith(valeur.toLowerCase());
                     })
                 );
             } else {
                 let monsters = [];
                 families.forEach((family) => {
                     family.monsters.forEach((monster) => {
-                        if(monster.monster_name.toLowerCase().includes(valeur.toLowerCase()) && !tries.some((tryMonster) => {
+                        if(monster.monster_name.toLowerCase().startsWith(valeur.toLowerCase()) && !tries.some((tryMonster) => {
                             return tryMonster.information.name_monster === monster.monster_name;
                         })) {
                             monsters.push(monster);
@@ -92,7 +92,15 @@ export default function Classic() {
                     indice2: res.data.indice.indice2
                 });
             }
-            Cookies.set("tries", JSON.stringify([...tries, res.data]));
+            
+            if(Cookies.get('tries')) {
+                let triesJSON = JSON.parse(Cookies.get('tries'));
+                triesJSON.push(id);
+                console.log("Cookie : ", triesJSON);
+                Cookies.set('tries', JSON.stringify(triesJSON));
+            } else {
+                Cookies.set('tries', JSON.stringify([id]));
+            }
         })
     }
 
@@ -102,14 +110,28 @@ export default function Classic() {
             setFamilies(res.data);
         })
 
+        const savedTries = Cookies.get('tries');
+        if (savedTries) {
+            let triesJSON = JSON.parse(savedTries);
+            let resultat = [];
+            for(let i = 0; i < triesJSON.length; i++) {
+                console.log(triesJSON[i])
+                axios.post(`${process.env.REACT_APP_URL_API}/guessMonster`, {
+                    monster_id: triesJSON[i],
+                    number_try: i + 1
+                })
+                .then((res) => {
+                    resultat.push(res.data);
+                    if (i === triesJSON.length - 1) {
+                        setTries(resultat);
+                    }
+                })
+            }
+        }
+
         const savedSearchMode = Cookies.get('searchMode');
         if (savedSearchMode) {
           setSearchMode(savedSearchMode);
-        }
-
-        const savedTries = Cookies.get('tries');
-        if (savedTries) {
-          setTries(JSON.parse(savedTries));
         }
     }, []);
 
@@ -267,7 +289,7 @@ export default function Classic() {
             </div>
 
             {
-                tries.length > 0 && [
+                tries.length > 0 && (
                     <table>
                         <thead>
                             <tr>
@@ -366,7 +388,7 @@ export default function Classic() {
                             }
                         </tbody>
                     </table>
-                ]
+                )
             }
 
         </div>
