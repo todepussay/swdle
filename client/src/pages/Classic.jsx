@@ -25,7 +25,7 @@ export default function Classic() {
     const [proposition, setProposition] = useState([]);
     const [tries, setTries] = useState([]);
     const [indiceSelected, setIndiceSelected] = useState();
-    const [indice, setIndice] = useState([]);
+    const [indice, setIndice] = useState({});
     const input = React.createRef();
 
     const handleChange = (e) => {
@@ -38,11 +38,24 @@ export default function Classic() {
         } else {
 
             if (searchMode === "family") {
-                setProposition(
-                    families.filter((family) => {
-                        return family.family_name.toLowerCase().startsWith(valeur.toLowerCase());
-                    })
-                );
+                let familiesPropo = [];
+                familiesPropo = families.filter((family) => {
+                    return family.family_name.toLowerCase().startsWith(valeur.toLowerCase());
+                });
+
+                familiesPropo.map((family) => {
+                    family.monsters = family.monsters.filter((monster) => {
+                        return !tries.some((tryMonster) => {
+                            return tryMonster.information.name_monster === monster.monster_name;
+                        });
+                    });
+                });
+
+                familiesPropo = familiesPropo.filter((family) => {
+                    return family.monsters.length > 0;
+                });
+
+                setProposition(familiesPropo);
             } else {
                 let monsters = [];
                 families.forEach((family) => {
@@ -56,8 +69,6 @@ export default function Classic() {
                 });
 
                 setProposition(monsters);
-                
-                
             }
         }
     }   
@@ -84,6 +95,7 @@ export default function Classic() {
                 setIndice({
                     indice1: res.data.indice.indice1
                 });
+                Cookies.set('indice', JSON.stringify(res.data.indice));
             }
 
             if(tries.length + 1 >= 12) {
@@ -91,12 +103,12 @@ export default function Classic() {
                     indice1: res.data.indice.indice1,
                     indice2: res.data.indice.indice2
                 });
+                Cookies.set('indice', JSON.stringify(res.data.indice));
             }
             
             if(Cookies.get('tries')) {
                 let triesJSON = JSON.parse(Cookies.get('tries'));
                 triesJSON.push(id);
-                console.log("Cookie : ", triesJSON);
                 Cookies.set('tries', JSON.stringify(triesJSON));
             } else {
                 Cookies.set('tries', JSON.stringify([id]));
@@ -115,7 +127,6 @@ export default function Classic() {
             let triesJSON = JSON.parse(savedTries);
             let resultat = [];
             for(let i = 0; i < triesJSON.length; i++) {
-                console.log(triesJSON[i])
                 axios.post(`${process.env.REACT_APP_URL_API}/guessMonster`, {
                     monster_id: triesJSON[i],
                     number_try: i + 1
@@ -133,10 +144,15 @@ export default function Classic() {
         if (savedSearchMode) {
           setSearchMode(savedSearchMode);
         }
+
+        const savedIndice = Cookies.get('indice');
+        if (savedIndice) {
+            setIndice(JSON.parse(savedIndice));
+        }
     }, []);
 
     return (
-        console.log(tries),
+        console.log(indice),
         <div className="Classic">
             <div className="indices">
                 <div className="list-indices">
@@ -186,7 +202,7 @@ export default function Classic() {
                                 indiceSelected === "indice1" ? (
                                     <img src={require(`../asset/skills/${indice.indice1}`)} />
                                 ) : indiceSelected === "indice2" ? (
-                                    <img src={require(`../asset/monsters/${indice.indice2}`)} />
+                                    <img src={indice.indice2} />
                                 ) : (
                                     ""
                                 )
@@ -226,6 +242,7 @@ export default function Classic() {
                             {
                                 searchMode === "family" ? (
                                     proposition.map((family, index) => {
+                                        if(family.monsters.length === 0) return null;
                                         return (
                                             <React.Fragment key={index}>
                                                 {
@@ -240,11 +257,6 @@ export default function Classic() {
                                                     <div className="monsters">
                                                         {
                                                             family.monsters
-                                                            .filter((monster) => {
-                                                                return !tries.some((tryMonster) => {
-                                                                    return tryMonster.information.name_monster === monster.monster_name;
-                                                                });
-                                                            })
                                                             .map((monster, index) => {
                                                                 return (
                                                                     <div className="monster" key={index} onClick={() => handleSubmitProposition(monster.monster_id)}>

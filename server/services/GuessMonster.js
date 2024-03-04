@@ -1,5 +1,6 @@
 const { db } = require('./db');
 const { getDailyPick } = require('./DailyPick');
+const Jimp = require('jimp');
 
 const guessMonster = async (req, res) => {
 
@@ -14,7 +15,7 @@ const guessMonster = async (req, res) => {
         WHERE m.id = ?
         `,
         [monster_id],
-        (err, result) => {
+        async (err, result) => {
             if(err){
                 console.log(err);
                 res.status(500).send("Internal server error");
@@ -38,6 +39,7 @@ const guessMonster = async (req, res) => {
                             indice: {},
                             try: number_try,
                             information: {
+                                id_monster: monster.id,
                                 name_monster: monster.name,
                                 image_monster: monster.image_filename,
                                 natural_stars_monster: monster.natural_stars,
@@ -65,7 +67,23 @@ const guessMonster = async (req, res) => {
                         } 
 
                         if(number_try >= 12){
-                            obj.indice["indice2"] = dailyPick.image_filename;
+                            // obj.indice["indice2"] = dailyPick.image_filename;
+
+                            try {
+                                const image = await Jimp.read("./asset/monsters/" + dailyPick.image_filename);
+                                const pixelSize = 10;
+                                image.greyscale();
+
+                                image.pixelate(pixelSize, (err, image) => {
+                                    image.getBase64(Jimp.AUTO, (err, base64) => {
+                                        obj.indice["indice2"] = base64;
+                                    });
+                                });
+
+                            } catch (error) {
+                                console.log(error);
+                            }
+
                         }
 
                         res.status(200).json(obj);

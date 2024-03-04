@@ -43,7 +43,7 @@ const getMonsters = async (req, res) => {
                                     monster_id: monster.monster_id,
                                     monster_name: monster.monster_name,
                                     monster_image: monster.monster_image,
-                                    monster_element: monster.monster_element
+                                    monster_element: monster.monster_element    
                                 })
                             }
                         })
