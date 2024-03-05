@@ -65,7 +65,12 @@ const getDailyPick = () => {
     return dailyPick;
 }
 
+const verifyDaily = (req, res) => {
+    res.status(200).send(dailyPick.date);
+}
+
 module.exports = {
     setDailyPick,
-    getDailyPick
+    getDailyPick,
+    verifyDaily
 };

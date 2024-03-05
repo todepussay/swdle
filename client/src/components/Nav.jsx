@@ -17,7 +17,7 @@ export default function Nav({ onglet, setOnglet }){
                 <span>Classique</span>
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link className={onglet === "skill" ? "active" : ""} to={"/skill"} onClick={() => setOnglet("skill")}>
                 <img src={skill} alt="Skill logo" />
                 <span>Compétence</span>
@@ -28,18 +28,19 @@ export default function Nav({ onglet, setOnglet }){
                 <img src={pixel} alt="Pixel logo" id="pixel" />
                 <span>Pixelisé</span>
               </Link>
-            </li>
+            </li> */}
           </ul>
-          <button onClick={
+          {/* <button onClick={
             () => {
               Cookies.remove("tries");
               Cookies.remove("proposition");
+              Cookies.remove("classic");
               window.location.reload();
             }
           
           }>
             Delete Cookie
-          </button>
+          </button> */}
         </nav>
     )
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './Classic.css';
 import img from '../asset/monsters/unit_icon_0000_1_1.png'
@@ -17,16 +17,17 @@ import hp from '../asset/hp.png';
 import indice_img from '../asset/indice.png';
 import monster from '../asset/monster.png';
 
-export default function Classic() {
+export default function Classic({ families }) {
 
     const [searchMode, setSearchMode] = useState("family");
     const [search, setSearch] = useState("");
-    const [families, setFamilies] = useState([]);
     const [proposition, setProposition] = useState([]);
     const [tries, setTries] = useState([]);
     const [indiceSelected, setIndiceSelected] = useState();
     const [indice, setIndice] = useState({});
-    const input = React.createRef();
+    const [correct, setCorrect] = useState(null);
+    const input = useRef(null);
+    const correct_ref = useRef(null);
 
     const handleChange = (e) => {
         let valeur = e.target.value;
@@ -77,6 +78,10 @@ export default function Classic() {
         setProposition([]);
         setSearch("");
         setSearchMode(searchMode === "family" ? "monster" : "family");
+        Cookies.set("classic", JSON.stringify({
+            tries: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")).tries : [],
+            indice: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")).indice : {}
+        }))
         Cookies.set('searchMode', searchMode === "family" ? "monster" : "family");
     }
 
@@ -95,7 +100,14 @@ export default function Classic() {
                 setIndice({
                     indice1: res.data.indice.indice1
                 });
-                Cookies.set('indice', JSON.stringify(res.data.indice));
+                Cookies.set("classic", JSON.stringify({
+                    tries: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")).tries : [],
+                    indice: {
+                        indice1: res.data.indice.indice1,
+                        indice2: ""
+                    }
+                }))
+                // Cookies.set('indice', JSON.stringify(res.data.indice));
             }
 
             if(tries.length + 1 >= 12) {
@@ -103,28 +115,50 @@ export default function Classic() {
                     indice1: res.data.indice.indice1,
                     indice2: res.data.indice.indice2
                 });
-                Cookies.set('indice', JSON.stringify(res.data.indice));
+                Cookies.set("classic", JSON.stringify({
+                    tries: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")).tries : [],
+                    indice: {
+                        indice1: res.data.indice.indice1,
+                        indice2: res.data.indice.indice2
+                    }
+                }))
+                // Cookies.set('indice', JSON.stringify(res.data.indice));
+            }
+
+            let triesJSON = Cookies.get("classic") ? JSON.parse(Cookies.get("classic")).tries : [];
+            triesJSON.push(id);
+            Cookies.set("classic", JSON.stringify({
+                tries: triesJSON,
+                indice: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")).indice : {}
+            }))
+
+            if(res.data.correct){
+                setCorrect(res.data.information);
+                setTimeout(() => {
+                    correct_ref.current.scrollIntoView({ behavior: 'smooth' });
+                }, 500);
             }
             
-            if(Cookies.get('tries')) {
-                let triesJSON = JSON.parse(Cookies.get('tries'));
-                triesJSON.push(id);
-                Cookies.set('tries', JSON.stringify(triesJSON));
-            } else {
-                Cookies.set('tries', JSON.stringify([id]));
-            }
+            // if(Cookies.get('tries')) {
+            //     let triesJSON = JSON.parse(Cookies.get('tries'));
+            //     triesJSON.push(id);
+            //     Cookies.set('tries', JSON.stringify(triesJSON));
+            // } else {
+            //     Cookies.set('tries', JSON.stringify([id]));
+            // }
         })
     }
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_URL_API}/getAllMonsters`)
-        .then((res) => {
-            setFamilies(res.data);
-        })
+        if(!Cookies.get('classic')){
+            Cookies.set("classic", JSON.stringify({
+                tries: [],
+                indice: {}
+            }))
+        } else {
+            let savedClassic = JSON.parse(Cookies.get("classic"));
 
-        const savedTries = Cookies.get('tries');
-        if (savedTries) {
-            let triesJSON = JSON.parse(savedTries);
+            let triesJSON = savedClassic.tries;
             let resultat = [];
             for(let i = 0; i < triesJSON.length; i++) {
                 axios.post(`${process.env.REACT_APP_URL_API}/guessMonster`, {
@@ -135,24 +169,60 @@ export default function Classic() {
                     resultat.push(res.data);
                     if (i === triesJSON.length - 1) {
                         setTries(resultat);
+                        if(resultat[resultat.length - 1].correct){
+                            setCorrect(resultat[resultat.length - 1].information);
+                            setTimeout(() => {
+                                correct_ref.current.scrollIntoView({ behavior: 'smooth' });
+                            }, 500);
+                        }
                     }
                 })
+            }
+
+            const savedIndice = savedClassic.indice;
+            if (savedIndice) {
+                setIndice(savedIndice);
             }
         }
 
         const savedSearchMode = Cookies.get('searchMode');
         if (savedSearchMode) {
-          setSearchMode(savedSearchMode);
+            setSearchMode(savedSearchMode);
         }
 
-        const savedIndice = Cookies.get('indice');
-        if (savedIndice) {
-            setIndice(JSON.parse(savedIndice));
-        }
+
+
+        // const savedTries = Cookies.get('tries');
+        // if (savedTries) {
+        //     let triesJSON = JSON.parse(savedTries);
+        //     let resultat = [];
+        //     for(let i = 0; i < triesJSON.length; i++) {
+        //         axios.post(`${process.env.REACT_APP_URL_API}/guessMonster`, {
+        //             monster_id: triesJSON[i],
+        //             number_try: i + 1
+        //         })
+        //         .then((res) => {
+        //             resultat.push(res.data);
+        //             if (i === triesJSON.length - 1) {
+        //                 setTries(resultat);
+        //             }
+        //         })
+        //     }
+        // }
+
+        // const savedSearchMode = Cookies.get('searchMode');
+        // if (savedSearchMode) {
+        //   setSearchMode(savedSearchMode);
+        // }
+
+        // const savedIndice = Cookies.get('indice');
+        // if (savedIndice) {
+        //     setIndice(JSON.parse(savedIndice));
+        // }
     }, []);
 
     return (
-        console.log(indice),
+        console.log(tries, correct),
         <div className="Classic">
             <div className="indices">
                 <div className="list-indices">
@@ -216,6 +286,7 @@ export default function Classic() {
                 <input 
                     type="text"
                     placeholder={
+                        correct ? "Bravo ! Vous avez trouvé le monstre !" :
                         searchMode === "family" ? "Rechercher par famille de monstre" : "Rechercher par nom du monstre"
                     }
                     value={search}
@@ -226,6 +297,9 @@ export default function Classic() {
                             handleSubmitProposition(proposition[0].monster_id);
                         }
                     }}
+                    { ...correct && {
+                        disabled: true
+                    } }
                 />
                 
                 <button
@@ -384,9 +458,9 @@ export default function Classic() {
                                                     {element.information.family_monster_name}
                                                 </span>
                                             </td>
-                                            <td className={element.information.leader_skill_monster ? "good" : "bad"}>
+                                            <td className={element.information.leader_skill_good ? "good" : "bad"}>
                                                 <span>
-                                                    {element.information.leader_skill_good ? "Oui" : "Non"}
+                                                    {element.information.leader_skill_monster ? "Oui" : "Non"}
                                                 </span>
                                             </td>
                                             <td className={element.information.fusion_food_good ? "good" : "bad"}>
@@ -400,6 +474,24 @@ export default function Classic() {
                             }
                         </tbody>
                     </table>
+                )
+            }
+
+            {
+                correct !== null && (
+                    <div className="correct" ref={correct_ref}>
+                        <p>
+                            { 
+                                tries.length === 1 ? "One Shot !" : `Bravo ! Vous avez trouvé le monstre en ${tries.length} essais !`
+                            }
+                        </p>
+                        <div className="resultat">
+                            <img src={require(`../asset/monsters/${correct.image_monster}`)} alt="Monster Image" />
+                            <span>
+                                {correct.name_monster}
+                            </span>
+                        </div>
+                    </div>
                 )
             }
 

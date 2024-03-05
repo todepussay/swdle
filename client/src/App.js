@@ -8,12 +8,38 @@ import Home from "./pages/Home";
 import Classic from "./pages/Classic";
 import Skill from "./pages/Skill";
 import Pixel from "./pages/Pixel";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 function App() {
   
   const [onglet, setOnglet] = React.useState("classic");
+  const [families, setFamilies] = React.useState([]);
+
+  // Fonction pour comparer les dates
+  function comparerDates(dateA, dateB) {
+    return (
+        dateA.getFullYear() === dateB.getFullYear() &&
+        dateA.getMonth() === dateB.getMonth() &&
+        dateA.getDate() === dateB.getDate()
+    );
+  }
 
   useEffect(() => {
+
+    axios.get(`${process.env.REACT_APP_URL_API}/getAllMonsters`)
+    .then((res) => {
+        setFamilies(res.data);
+    })
+
+    axios.get(`${process.env.REACT_APP_URL_API}/verifyDaily`)
+    .then((res) => {
+      if(!comparerDates(new Date(res.data), new Date())){
+        Cookies.remove("classic");
+        window.location.pathname = "/";
+      }
+    })
+    
     if(onglet === "home" && window.location.pathname !== "/"){
       window.location.pathname = "/";
     }
@@ -34,9 +60,9 @@ function App() {
         <div className="game">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/classic" element={<Classic />} />
-            <Route path="/skill" element={<Skill />} />
-            <Route path="/pixel" element={<Pixel />} />
+            <Route path="/classic" element={<Classic families={families} />} />
+            {/* <Route path="/skill" element={<Skill />} />
+            <Route path="/pixel" element={<Pixel />} /> */}
           </Routes>
         </div>
       </div>
