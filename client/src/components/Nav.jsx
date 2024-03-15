@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import monster from "./../asset/monster.png";
 import skill from "./../asset/skill.png";
 import pixel from "./../asset/pixel.png";
-import "./Nav.css";
+import "./../styles/Nav.css";
 import Cookies from "js-cookie";
 
 export default function Nav({ onglet, setOnglet }){

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import './Classic.css';
+import '../styles/Classic.css';
 import img from '../asset/monsters/unit_icon_0000_1_1.png'
 import Cookies from 'js-cookie';
 import star from '../asset/star.png';
@@ -79,6 +79,7 @@ export default function Classic({ families }) {
         setSearch("");
         setSearchMode(searchMode === "family" ? "monster" : "family");
         Cookies.set("classic", JSON.stringify({
+            date: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")).date : new Date(),
             tries: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")).tries : [],
             indice: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")).indice : {}
         }))
@@ -101,6 +102,7 @@ export default function Classic({ families }) {
                     indice1: res.data.indice.indice1
                 });
                 Cookies.set("classic", JSON.stringify({
+                    date: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")).date : new Date(),
                     tries: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")).tries : [],
                     indice: {
                         indice1: res.data.indice.indice1,
@@ -116,6 +118,7 @@ export default function Classic({ families }) {
                     indice2: res.data.indice.indice2
                 });
                 Cookies.set("classic", JSON.stringify({
+                    date: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")).date : new Date(),
                     tries: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")).tries : [],
                     indice: {
                         indice1: res.data.indice.indice1,
@@ -128,6 +131,7 @@ export default function Classic({ families }) {
             let triesJSON = Cookies.get("classic") ? JSON.parse(Cookies.get("classic")).tries : [];
             triesJSON.push(id);
             Cookies.set("classic", JSON.stringify({
+                date: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")).date : new Date(),
                 tries: triesJSON,
                 indice: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")).indice : {}
             }))
@@ -152,6 +156,7 @@ export default function Classic({ families }) {
     useEffect(() => {
         if(!Cookies.get('classic')){
             Cookies.set("classic", JSON.stringify({
+                date: new Date(),
                 tries: [],
                 indice: {}
             }))
@@ -222,7 +227,7 @@ export default function Classic({ families }) {
     }, []);
 
     return (
-        console.log(tries, correct),
+        console.log(families),
         <div className="Classic">
             <div className="indices">
                 <div className="list-indices">

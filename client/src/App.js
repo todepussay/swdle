@@ -32,13 +32,17 @@ function App() {
         setFamilies(res.data);
     })
 
-    axios.get(`${process.env.REACT_APP_URL_API}/verifyDaily`)
-    .then((res) => {
-      if(!comparerDates(new Date(res.data), new Date())){
-        Cookies.remove("classic");
-        window.location.pathname = "/";
-      }
-    })
+    if(Cookies.get("classic")){
+      let dateClassic = new Date(JSON.parse(Cookies.get("classic")).date);
+      axios.get(`${process.env.REACT_APP_URL_API}/verifyDaily`)
+      .then((res) => {
+        if(!comparerDates(new Date(res.data), new Date(dateClassic))){
+          Cookies.remove("classic");
+
+          window.location.pathname = "/";
+        }
+      })
+    }
     
     if(onglet === "home" && window.location.pathname !== "/"){
       window.location.pathname = "/";
