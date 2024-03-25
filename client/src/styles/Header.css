@@ -11,7 +11,7 @@ header {
     box-shadow: inset 0px 10px 15px -3px rgba(0,0,0,0.1),0px 10px 15px -3px rgba(0,0,0,0.1);
 }
   
-h1, h2 {
+h1, h2, h1 a {
     font-size: 55px;
     font-weight: 900;
     letter-spacing: -1px;
@@ -20,12 +20,34 @@ h1, h2 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     -webkit-text-stroke-color: var(--font-shadow-color);
+    text-decoration: none;
+    box-shadow: none;
 }
   
 @media (max-width: 1700px) {
-    h1, h2 {
+    h1, h2, h1 a {
         font-size: 40px;
         font-weight: 800;
         -webkit-text-stroke-width: 2px;
+    }
+}
+
+@media (max-width: 430px) {
+    header {
+        padding: 0 10px;
+        gap: 10px;
+        justify-content: space-around;
+        height: 8%;
+    }
+
+    h1, h2, h1 a {
+        font-size: 32px;
+        font-weight: 700;
+        -webkit-text-stroke-width: 1px;
+    }
+
+    .obelix {
+        width: 30px;
+        height: 30px;
     }
 }

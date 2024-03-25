@@ -13,3 +13,10 @@
     letter-spacing: -1px;
     -webkit-text-stroke-width: 2px;
 }
+
+@media (max-width: 430px) {
+    .Home {
+        width: 100%;
+        height: 100%;
+    }
+}

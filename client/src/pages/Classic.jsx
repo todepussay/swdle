@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import '../styles/Classic.css';
-import img from '../asset/monsters/unit_icon_0000_1_1.png'
 import Cookies from 'js-cookie';
 import star from '../asset/star.png';
 import star_awakened from '../asset/star-awakened.png';
@@ -17,7 +16,7 @@ import hp from '../asset/hp.png';
 import indice_img from '../asset/indice.png';
 import monster from '../asset/monster.png';
 
-export default function Classic({ families }) {
+export default function Classic({ families, width }) {
 
     const [searchMode, setSearchMode] = useState("family");
     const [search, setSearch] = useState("");
@@ -44,7 +43,7 @@ export default function Classic({ families }) {
                     return family.family_name.toLowerCase().startsWith(valeur.toLowerCase());
                 });
 
-                familiesPropo.map((family) => {
+                familiesPropo.forEach((family) => {
                     family.monsters = family.monsters.filter((monster) => {
                         return !tries.some((tryMonster) => {
                             return tryMonster.information.name_monster === monster.monster_name;
@@ -87,7 +86,9 @@ export default function Classic({ families }) {
     }
 
     const handleSubmitProposition = (id) => {
-        input.current.focus();
+        if(width > 430){
+            input.current.focus();
+        }
         axios.post(`${process.env.REACT_APP_URL_API}/guessMonster`, {
             monster_id: id,
             number_try: tries.length + 1
@@ -227,66 +228,75 @@ export default function Classic({ families }) {
     }, []);
 
     return (
-        console.log(families),
         <div className="Classic">
-            <div className="indices">
-                <div className="list-indices">
-                    <div className="indice" id='indice1'>
-                        <img src={tries.length >= 6 ? monster : indice_img} alt="Indice" onClick={
-                            () => {
-                                if(tries.length >= 6){
-                                    setIndiceSelected(indiceSelected === "indice1" ? "" : "indice1");
-                                }
-                            }
-                        } />
-                        <span>
-                            {
-                                tries.length >= 6 ? (
-                                    ""
-                                ) : (
-                                    `Débloqué dans ${6 - tries.length} essais`
-                                )
-                            }
-                        </span>
-                    </div>
-                    <div className="indice" id='indice2'>
-                        <img src={tries.length >= 12 ? monster : indice_img} alt="Indice" onClick={
-                            () => {
-                                if(tries.length >= 12){
-                                    setIndiceSelected(indiceSelected === "indice2" ? "" : "indice2");
-                                }
-                            }
-                        } />
-                        <span>
-                            {
-                                tries.length >= 12 ? (
-                                    ""
-                                ) : (
-                                    `Débloqué dans ${12 - tries.length} essais`
-                                )
-                            }
-                        </span>
-                    </div>
-                </div>
-                
-
-                {
-                    indiceSelected && (
-                        <div className="indice-content">
-                            {
-                                indiceSelected === "indice1" ? (
-                                    <img src={require(`../asset/skills/${indice.indice1}`)} />
-                                ) : indiceSelected === "indice2" ? (
-                                    <img src={indice.indice2} />
-                                ) : (
-                                    ""
-                                )
-                            }
+            {
+                tries.length > 0 ? (
+                    <div className="indices">
+                        <div className="list-indices">
+                            <div className="indice" id='indice1'>
+                                <img src={tries.length >= 6 ? monster : indice_img} alt="Indice" onClick={
+                                    () => {
+                                        if(tries.length >= 6){
+                                            setIndiceSelected(indiceSelected === "indice1" ? "" : "indice1");
+                                        }
+                                    }
+                                } />
+                                <span>
+                                    {
+                                        tries.length >= 6 ? (
+                                            ""
+                                        ) : (
+                                            `Débloqué dans ${6 - tries.length} essais`
+                                        )
+                                    }
+                                </span>
+                            </div>
+                            <div className="indice" id='indice2'>
+                                <img src={tries.length >= 12 ? monster : indice_img} alt="Indice" onClick={
+                                    () => {
+                                        if(tries.length >= 12){
+                                            setIndiceSelected(indiceSelected === "indice2" ? "" : "indice2");
+                                        }
+                                    }
+                                } />
+                                <span>
+                                    {
+                                        tries.length >= 12 ? (
+                                            ""
+                                        ) : (
+                                            `Débloqué dans ${12 - tries.length} essais`
+                                        )
+                                    }
+                                </span>
+                            </div>
                         </div>
-                    )
-                }
+                                
 
-            </div>
+                        {
+                            indiceSelected && (
+                                <div className="indice-content">
+                                    {
+                                        indiceSelected === "indice1" ? (
+                                            <img src={require(`../asset/skills/${indice.indice1}`)} alt="Indice1" />
+                                        ) : indiceSelected === "indice2" ? (
+                                            <img src={indice.indice2} alt="Indice2" />
+                                        ) : (
+                                            ""
+                                        )
+                                    }
+                                </div>
+                            )
+                        }
+                    </div>
+                ) : (
+                    <div className="explications">
+                        <p>Devine le monstre de <br /> Summoners War du jour !</p>
+                        <span>Tu peux choisir entre chercher par famille de monstre, ou directement par monstre.</span> 
+                        <span>Bonne chance !</span>
+                    </div>
+                )
+            }
+
             <div className="search-zone">
                 <input 
                     type="text"
@@ -342,7 +352,7 @@ export default function Classic({ families }) {
                                                                         <p className='monster-name'>
                                                                             {monster.monster_name}
                                                                         </p>
-                                                                        <img src={require(`../asset/monsters/${monster.monster_image}`)} alt="Monster Image" />
+                                                                        <img src={require(`../asset/monsters/${monster.monster_image}`)} alt="Monster" />
                                                                     </div>
                                                                 )
                                                             })
@@ -368,7 +378,7 @@ export default function Classic({ families }) {
                                                 <p className='monster-name'>
                                                     {monster.monster_name}
                                                 </p>
-                                                <img src={require(`../asset/monsters/${monster.monster_image}`)} alt="Monster Image" />
+                                                <img src={require(`../asset/monsters/${monster.monster_image}`)} alt="Monster" />
                                             </div>
                                         )
                                     })
@@ -404,7 +414,7 @@ export default function Classic({ families }) {
                                     return (
                                         <tr key={index}>
                                             <td className='monster-name-hover'>
-                                                <img src={require(`../asset/monsters/${element.information.image_monster}`)} alt="Monster Image" />
+                                                <img src={require(`../asset/monsters/${element.information.image_monster}`)} alt="Monster" />
                                                 <span>
                                                     {element.information.name_monster}
                                                 </span>
@@ -491,8 +501,9 @@ export default function Classic({ families }) {
                             }
                         </p>
                         <div className="resultat">
-                            <img src={require(`../asset/monsters/${correct.image_monster}`)} alt="Monster Image" />
+                            <img src={require(`../asset/monsters/${correct.image_monster}`)} alt="Monster" />
                             <span>
+                                {correct.family_monster_name} <br />
                                 {correct.name_monster}
                             </span>
                         </div>

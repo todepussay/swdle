@@ -1,12 +1,13 @@
 import React from "react";
 import obelix from "./../asset/obelix.png";
 import "./../styles/Header.css";
+import { Link } from "react-router-dom";
 
-export default function Header({ onglet }){
+export default function Header({ onglet, setOnglet }){
     return (
         <header>
             <img src={obelix} alt="Obelix" className="obelix" />
-            <h1>SWdle</h1>
+            <h1><Link to="/" onClick={() => setOnglet("home")}>SWdle</Link></h1>
             <img src={obelix} alt="Obelix" className="obelix" />
 
             {
@@ -16,7 +17,8 @@ export default function Header({ onglet }){
                         {
                             onglet === "classic" ? "Classique" :
                             onglet === "skill" ? "Compétence" :
-                            onglet === "pixel" ? "Pixelisé" : ""
+                            onglet === "pixel" ? "Pixelisé" : 
+                            onglet === "home" ? "" : ""
                         }
                     </h2>
                     <img src={obelix} alt="Obelix" className="obelix" />

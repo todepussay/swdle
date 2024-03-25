@@ -1,20 +1,21 @@
 import { Route, Routes } from "react-router-dom";
-import "./App.css";
-import React, { useEffect } from "react";
+import "./styles/App.css";
+import React, { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Nav from "./components/Nav";
 import corner from "./asset/corner.png";
 import Home from "./pages/Home";
 import Classic from "./pages/Classic";
-import Skill from "./pages/Skill";
-import Pixel from "./pages/Pixel";
+// import Skill from "./pages/Skill";
+// import Pixel from "./pages/Pixel";
 import axios from "axios";
 import Cookies from "js-cookie";
 
 function App() {
   
-  const [onglet, setOnglet] = React.useState("classic");
-  const [families, setFamilies] = React.useState([]);
+  const [onglet, setOnglet] = useState("home");
+  const [families, setFamilies] = useState([]);
+  const [width, setWidth] = useState(window.innerWidth);
 
   // Fonction pour comparer les dates
   function comparerDates(dateA, dateB) {
@@ -26,6 +27,10 @@ function App() {
   }
 
   useEffect(() => {
+
+    function handleResize(){
+      setWidth(window.innerWidth);
+    }
 
     axios.get(`${process.env.REACT_APP_URL_API}/getAllMonsters`)
     .then((res) => {
@@ -43,11 +48,13 @@ function App() {
         }
       })
     }
-    
-    if(onglet === "home" && window.location.pathname !== "/"){
-      window.location.pathname = "/";
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
     }
-  }, []);
+  }, [onglet]);
 
   return (
     <div className="App">
@@ -58,13 +65,17 @@ function App() {
       <img src={corner} alt="Corner bottom left" className="corner" id="corner-bottom-left" />
       
       <div className="content">
-        <Header onglet={onglet} />
-        <Nav onglet={onglet} setOnglet={(e) => {setOnglet(e)}} />
+        <Header onglet={onglet} setOnglet={(e) => {setOnglet(e)}} />
+        
+        {
+          width > 430 && 
+          <Nav onglet={onglet} setOnglet={(e) => {setOnglet(e)}} />
+        }
 
         <div className="game">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/classic" element={<Classic families={families} />} />
+            <Route path="/" element={<Home onglet={onglet} setOnglet={(e) => {setOnglet(e)}} width={width} />} />
+            <Route path="/classic" element={<Classic families={families} width={width} />} />
             {/* <Route path="/skill" element={<Skill />} />
             <Route path="/pixel" element={<Pixel />} /> */}
           </Routes>

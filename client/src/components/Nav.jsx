@@ -4,12 +4,12 @@ import monster from "./../asset/monster.png";
 import skill from "./../asset/skill.png";
 import pixel from "./../asset/pixel.png";
 import "./../styles/Nav.css";
-import Cookies from "js-cookie";
 
 export default function Nav({ onglet, setOnglet }){
 
     return (
         <nav>
+          <h2>Sélectionnez votre mode de jeu</h2>
           <ul>
             <li>
               <Link className={onglet === "classic" ? "active" : ""} to={"/classic"} onClick={() => setOnglet("classic")}>

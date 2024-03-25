@@ -115,3 +115,22 @@ body {
     width: 95%;
   }
 }
+
+@media (max-width: 430px) {
+  .App {
+    height: 100%;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    border-radius: 0px;
+  }
+
+  .corner {
+    display: none;
+  }
+
+  .game {
+    width: 100%;
+    height: 92%
+  }
+}
