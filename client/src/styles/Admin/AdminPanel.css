@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    --disabled: #f3f3f3;
+    --color-1: #f8fafc;
+    --color-2: #f1f5f9;
+    --color-3: #e2e8f0;
+    --color-4: #cbd5e1;
+    --color-5: #94a3b8;
+    --color-6: #64748b;
+    --color-7: #475569;
+    --color-8: #334155;
+    --color-9: #1e293b;
+    --color-10: #0f172a;
+    --color-11: #020617;
+    --success: #4CAF50;
+    --success-disabled: #6bdb6f;
+    --success-hover: #388E3C;
+    --success-active: #327e35;
+    --danger: #f44336;
+    --danger-disabled: #d86060;
+    --danger-hover: #ec5252;
+    --danger-active: #C1272D;
+    --primary: #2196F3;
+    --primary-disabled: #69ade5;
+    --primary-hover: #1E88E5;
+    --primary-active: #1976D2;
+}
+
+.AdminPanel {
+    display: flex;
+    flex-direction: row;
+    max-width: 100vw;
+    overflow: hidden;
+    background-color: var(--color-2);
+}
+
+.panel {
+    width: 100%;
+    height: 100vh;
+    overflow-x: auto;
+}

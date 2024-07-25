@@ -1,0 +1,579 @@
+.Classic {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: auto;
+    padding-bottom: 50px;
+}
+
+.explications {
+    background-color: var(--yellow-dark);
+    margin-top: 20px;
+    border-radius: 20px;
+    width: 70%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.explications p {
+    font-size: 30px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    -webkit-text-stroke-width: 2px;
+    background: linear-gradient(180deg, var(--font-color-top) 20%, var(--font-color-bottom) 150%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-color: var(--font-shadow-color);
+    text-decoration: none;
+    text-align: center;
+    margin-bottom: 10px;
+    line-height: 1;
+}
+
+.explications span {
+    font-size: 23px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    -webkit-text-stroke-width: 1px;
+    background-color: var(--font-color-top);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-color: var(--font-shadow-color);
+    text-decoration: none;
+    text-align: center;
+}
+
+.indices {
+    background-color: var(--yellow-dark);
+    margin-top: 20px;
+    border-radius: 20px;
+    width: 70%;
+}
+
+.list-indices {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+}
+
+.indice {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    min-width: 50%;
+}
+
+.indice img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+.indice span {
+    text-align: center;
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    -webkit-text-stroke-width: 1.5px;
+    background: linear-gradient(180deg, var(--font-color-top) 20%, var(--font-color-bottom) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-color: var(--font-shadow-color);
+}
+
+.indice-content {
+    background-color: var(--yellow-light);
+    width: 70%;
+    margin: 20px auto;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.search-zone {
+    margin-top: 50px;
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    position: relative;
+}
+
+.search-zone input {
+    border-radius: 8px;
+    font-size: 35px;
+    outline: none;
+    border: none;
+    background-color: var(--input-background);
+    width: 75%;    
+    padding: 10px;
+    box-shadow: inset 0px 0px 23px 10px rgba(0,0,0,0.1), 0px 0px 23px 10px rgba(0,0,0,0.1);
+}
+
+.proposition {
+    z-index: 100;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--yellow-dark);
+    width: 100%;
+    padding: 20px;
+    border-radius: 20px;
+    margin-top: 10px;
+    border: 6px solid var(--font-shadow-color);
+    max-height: 700px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+hr {
+    width: 100%;
+    border: 1px solid var(--font-shadow-color);
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.family {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.family .family-name {
+    font-size: 35px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    -webkit-text-stroke-width: 2px;
+    background: linear-gradient(180deg, var(--font-color-top) 20%, var(--font-color-bottom) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-color: var(--font-shadow-color);
+}
+
+.family .monsters {
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.family .monsters .monster {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--yellow-light);
+    padding: 0 20px 15px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    border: 3px solid var(--font-shadow-color);
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+.family .monsters .monster .monster-name {
+    text-align: center;
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    -webkit-text-stroke-width: 1.5px;
+    background: linear-gradient(180deg, var(--font-color-top) 20%, var(--font-color-bottom) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-color: var(--font-shadow-color);
+}
+
+.family .monsters .monster img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+.propostion-monster {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 10px;
+
+}
+
+.monster {
+    width: fit-content;
+    background-color: var(--yellow-light);
+    padding: 0 20px 15px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    border: 3px solid var(--font-shadow-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+.monster .monster-name {
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    -webkit-text-stroke-width: 1.5px;
+    background: linear-gradient(180deg, var(--font-color-top) 20%, var(--font-color-bottom) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-color: var(--font-shadow-color);
+}
+
+.monster img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+table {
+    margin-top: 20px;
+    border-spacing: 0;
+    overflow: auto;
+    width: 90%;
+}
+
+th {
+    background-color: var(--font-shadow-color);
+    color: var(--font-color);
+    padding: 10px;
+    text-align: center;
+    border: 1px solid var(--font-shadow-color);
+}
+
+td {
+    background-color: var(--button-inside);
+    color: var(--font-color);
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    border: 1px solid var(--font-shadow-color);
+}
+
+.monster-name-hover {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.monster-name-hover:hover span {
+    display: block;
+}
+
+.monster-name-hover:hover img {
+    opacity: 0.5;
+    filter: blur(2px);
+}
+
+.monster-name-hover span {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+}
+
+.monster-name-hover img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+td span {
+    font-size: 30px;
+}
+
+.family-td span {
+    font-size: 20px;
+}
+
+.bad {
+    background-color: var(--bad);
+}
+
+.good {
+    background-color: var(--good);
+}
+
+.correct {
+    background: var(--yellow-dark);
+    width: 80%;
+    border-radius: 20px;
+    padding: 30px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.correct p {
+    width: 90%;
+    font-size: 30px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    -webkit-text-stroke-width: 1.5px;
+    background: linear-gradient(180deg, var(--font-color-top) 20%, var(--font-color-bottom) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-color: var(--font-shadow-color);
+    margin: auto;
+    text-align: center;
+    line-height: 1;
+}
+
+.correct .resultat {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 20px;
+}
+
+.correct .resultat img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.correct .resultat span {
+    font-size: 30px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    -webkit-text-stroke-width: 1.5px;
+    background: linear-gradient(180deg, var(--font-color-top) 20%, var(--font-color-bottom) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-color: var(--font-shadow-color);
+    line-height: 1;
+    text-align: center;
+}
+
+@media (max-width: 1920px) {
+    .indice span {
+        font-size: 20px;
+    }
+
+    .search-zone input {
+        font-size: 30px;
+    }
+
+    .search-zone button {
+        font-size: 25px;
+    }
+
+    .proposition {
+        font-size: 30px;
+    }
+
+    .family .family-name {
+        font-size: 30px;
+    }
+
+    .family .monsters .monster .monster-name {
+        font-size: 20px;
+    }
+
+    .family .monsters .monster img {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@media (max-width: 1700px){
+    .indice span {
+        -webkit-text-stroke-width: 0.8px;
+    }
+
+    .indice img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .search-zone {
+        margin-top: 20px;
+    }
+
+    .search-zone input {
+        font-size: 25px;
+    }
+
+    .proposition {
+        max-height: 350px;
+    }
+
+    .family .family-name {
+        font-size: 25px;
+        -webkit-text-stroke-width: 1px;
+    }
+
+    .family .monsters .monster .monster-name {
+        font-size: 17px;
+        -webkit-text-stroke-width: 1px;
+    }
+
+    .family .monsters .monster img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .monster .monster-name {
+        font-size: 17px;
+        -webkit-text-stroke-width: 1px;
+    }
+
+    .monster img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .correct p {
+        font-size: 23px;
+        -webkit-text-stroke-width: 1px;
+    }
+
+    .correct .resultat span {
+        font-size: 25px;
+    }
+
+    .correct .resultat img {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@media (max-width: 430px) {
+    .explications {
+        width: 95%;
+    }
+
+    .explications p {
+        font-size: 25px;
+        -webkit-text-stroke-width: 1px;
+    }
+
+    .explications span {
+        line-height: 1;
+        font-size: 21px;
+    }
+
+    .indices {
+        width: 95%;
+    }
+
+    .indice img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .indice span {
+        line-height: 1;
+        font-size: 21px;
+        width: 85%;
+    }
+
+    .search-zone {
+        width: 95%;
+        gap: 10px;
+    }
+
+    .search-zone input {
+        font-size: 18px;
+    }
+
+    .search-zone button {
+        width: 25%;
+        font-size: 19px;
+    }
+
+    .proposition {
+        max-height: 500px;
+    }
+
+    .family .monsters {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 100%;
+        gap: 5px;
+    }
+
+    .family .monsters .monster {
+        width: 100%;
+        flex-direction: row;
+        padding: 5px 10px;
+        gap: 10px;
+    }
+
+    .family .monsters .monster .monster-name {
+        order: 2;
+    }
+
+    .family .monsters .monster img {
+        order: 1;
+        margin-left: 10px;
+    }
+
+    .propostion-monster .monster {
+        width: 100%;
+        flex-direction: row;
+        padding: 5px 10px;
+        gap: 10px;
+    }
+
+    .propostion-monster .monster .monster-name {
+        order: 2;
+    }
+
+    .propostion-monster .monster img {
+        order: 1;
+        margin-left: 10px;
+    }
+
+    table {
+        font-size: 15px;
+        overflow: scroll;
+    }
+
+    table tr td img {
+        width: 30px;
+        height: 30px;
+    }
+
+    table tr td span img {
+        width: 25px;
+        height: 25px;
+    }
+
+    td span, .family-td span, th {
+        font-size: 8px;
+    }
+
+    .monster-name-hover img {
+    }
+
+    tr {
+        max-height: 20px;
+    }
+
+    .correct {
+        width: 95%;
+    }
+}

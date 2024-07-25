@@ -1,0 +1,18 @@
+.DataManagment {
+    width: 100%;
+    padding: 20px;
+}
+
+.DataManagment .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+}
+
+.DataManagment .header h2 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: var(--color-9);
+}

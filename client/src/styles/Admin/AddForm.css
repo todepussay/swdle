@@ -1,0 +1,40 @@
+.AddForm {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+}
+
+.AddForm .row {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.AddForm .row.center {
+    justify-content: center;
+}
+
+.AddForm .row.margin {
+    margin-bottom: 20px;
+}
+
+.AddForm .submit-btn {
+    margin-top: auto;
+    margin-left: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.AddForm .submit-btn .error {
+    color: var(--danger);
+}
+
+.AddForm p {
+    font-size: 1.3em;
+    color: var(--color-9);
+}
+

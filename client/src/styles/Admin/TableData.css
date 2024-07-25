@@ -1,0 +1,72 @@
+.table-container {
+    margin-left: 10px;
+}
+
+.tableData {
+    width: 100%;
+    margin: 20px auto;
+    margin-bottom: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+    background-color: var(--color-3);
+}
+
+.tableData thead {
+    background-color: var(--color-7);
+    color: var(--color-1);
+    font-size: 1.4em;
+    align-items: start;
+}
+
+.tableData tr th {
+    padding: 10px;
+    text-align: left;
+}
+
+.tableData tbody tr {
+    background-color: var(--color-4);
+}
+
+.tableData tbody tr:nth-child(2n) {
+    background-color: var(--color-3);
+}
+
+.tableData tbody tr:hover {
+    background-color: var(--color-5);
+}
+
+.tableData tbody tr td {
+    padding: 10px;
+}
+
+.tableData tbody tr td.text {
+    font-size: 1.3em;
+}
+
+.tableData tbody tr td.text.success {
+    color: var(--success);
+}
+
+.tableData tbody tr td.text.danger {
+    color: var(--danger);
+}
+
+.tableData tbody tr .actions {
+    display: flex;
+    gap: 10px;  
+}
+
+.tableData tbody tr .imgs img {
+    width: 70px;
+    height: 70px;
+    margin-right: 10px;
+}
+
+.tableData tbody tr .imgs.small img {
+    width: 50px;
+    height: 50px;
+}
+
+.tableData tbody tr .imgs.rounded img {
+    border-radius: 50%;
+}

@@ -1,0 +1,71 @@
+.Attribution {
+    height: 100%;
+}
+
+.Attribution .header {
+
+}
+
+.Attribution .header h2 {
+
+}
+
+.Attribution .header img {
+
+}
+
+.Attribution .content {
+    display: flex;
+    justify-content: space-around;
+    height: 85%;
+    overflow: hidden;
+}
+
+.Attribution .content .center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+.Attribution .content .left, 
+.Attribution .content .right {
+    width: 37%;
+}
+
+.Attribution .content .left ul,
+.Attribution .content .right ul {
+    margin-top: 10px;
+    list-style-type: none;
+    background: var(--color-4);
+    padding: 13px 20px;
+    border-radius: 8px;
+    font-size: 1.3em;
+    max-height: 80%;
+    overflow-y: auto;
+}
+.Attribution .content .left ul li,
+.Attribution .content .right ul li {
+    margin-bottom: 5px;
+    padding: 10px;
+    background: var(--color-3);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.Attribution .content .left ul li:hover,
+.Attribution .content .right ul li:hover {
+    background: var(--color-2);
+}
+
+.Attribution .content .left ul li.selected,
+.Attribution .content .right ul li.selected {
+    background: var(--color-5);
+}
+
+.Attribution .error {
+    width: 100%;
+    text-align: center;
+    color: var(--danger);
+    font-size: 1.3em;
+}

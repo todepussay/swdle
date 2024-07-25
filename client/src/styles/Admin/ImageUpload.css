@@ -1,0 +1,74 @@
+.ImageUpload {
+}
+
+.ImageUpload label {
+    font-size: 1.2em;
+    width: 100%;
+}
+
+.ImageUpload label span {
+    color: var(--danger);
+}
+
+.ImageUpload .images {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+    align-items: center;
+    align-content: center;
+    height: 100px;
+    width: 200px;
+    background-color: var(--color-3);
+    border-radius: 8px;
+}
+
+.ImageUpload .images .imageField {
+    height: 100%;
+    width: 100%;
+    border: 2px dashed var(--color-8);
+    position: relative;
+    cursor: pointer;
+}
+
+.ImageUpload .images .imageField span {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.ImageUpload .images .imageField input {
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    z-index: 3;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.ImageUpload .images .imageRender {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.ImageUpload .images .imageRender span {
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.ImageUpload .images .imageRender img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}

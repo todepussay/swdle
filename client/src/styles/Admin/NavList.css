@@ -1,0 +1,39 @@
+.NavList {
+    font-size: 0.7rem;
+    cursor: pointer;
+}
+
+.NavList:hover {
+    background-color: var(--color-9);
+}
+
+.NavList.active {
+    background-color: var(--color-9);
+}
+
+.NavList .information {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.NavList .information h2 {
+    display: flex;
+    gap: 10px;
+}
+
+.NavList .information .arrow {
+    font-size: 1.2rem;
+}
+
+.NavList .subList {
+    display: none;
+    margin-top: -10px;
+    margin-left: 30px;
+}
+
+.NavList .subList.open {
+    display: block;
+}

@@ -1,0 +1,52 @@
+.Radio {
+}
+
+.Radio label {
+    font-size: 1.2em;
+}
+
+.Radio label span {
+    color: var(--danger);
+}
+
+.Radio .inputs-radio {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    align-items: center;
+    align-content: center;
+    gap: 10px;
+}
+
+.Radio .inputs-radio .input-radio {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.Radio .inputs-radio .input-radio input {
+    /* display: none; */
+}
+
+.Radio .inputs-radio .input-radio label {
+    font-size: 1.1em;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    cursor: pointer;
+}
+
+.Radio .inputs-radio .input-radio label img {
+    width: 50px;
+    height: 50px;
+}
+
+.Radio .inputs-radio .input-radio label input:active {
+    background-color: red;
+}

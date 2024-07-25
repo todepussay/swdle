@@ -1,0 +1,93 @@
+.button {
+    background-color: var(--color-7);
+    color: var(--color-1);
+    border: 0;
+    outline: none;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px -3px rgba(0,0,0,0.1);
+}
+
+.button:disabled {
+    background-color: var(--color-4);
+    color: var(--disabled);
+}
+
+.button:disabled:hover {
+    background-color: var(--color-4);
+    cursor: auto;
+}
+
+.button:hover {
+    background-color: var(--color-8);
+}
+
+.button:active {
+    background-color: var(--color-9);
+}
+
+.button.success {
+    background-color: var(--success);
+}
+
+.button.success:disabled {
+    background-color: var(--success-disabled);
+}
+
+.button.success:hover {
+    background-color: var(--success-hover);
+}
+
+.button.success:disabled:hover {
+    background-color: var(--success-disabled);
+}
+
+.button.success:active {
+    background-color: var(--success-active);
+}
+
+.button.danger {
+    background-color: var(--danger);
+}
+
+.button.danger:disabled {
+    background-color: var(--danger-disabled);
+}
+
+.button.danger:hover {
+    background-color: var(--danger-hover);
+}
+
+.button.danger:disabled:hover {
+    background-color: var(--danger-disabled);
+}
+
+.button.danger:active {
+    background-color: var(--danger-active);
+}
+
+.button.primary {
+    background-color: var(--primary);
+}
+
+.button.primary:disabled {
+    background-color: var(--primary-disabled);
+}
+
+.button.primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.button.primary:disabled:hover {
+    background-color: var(--primary-disabled);
+}
+
+.button.primary:active {
+    background-color: var(--primary-active);
+}
