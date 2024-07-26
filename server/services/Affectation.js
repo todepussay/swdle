@@ -1,16 +1,7 @@
 const { db } = require('./db');
-const { UserHasPermissionAdmin } = require('./User');
 
 async function affecter(req, res) {
-    const token = req.headers.authorization.split(" ")[1];
-    
-    if(!UserHasPermissionAdmin(token)){
-        return res.json({
-            success: false,
-            cause: 'unauthorized',
-            message: 'Vous n\'avez pas les permissions nécessaires'
-        });
-    } else {
+    try {
 
         const { id, onglet } = req.query;
         const { monsters } = req.body;
@@ -48,20 +39,17 @@ async function affecter(req, res) {
                 message: 'L\'affectation a échouée'
             });
         }
-        
+    } catch(error){
+        return res.json({
+            success: false,
+            cause: 'affectation_failed',
+            message: 'L\'affectation a échouée'
+        });
     }
 }
 
 async function desaffecter(req, res) {
-    const token = req.headers.authorization.split(" ")[1];
-    
-    if(!UserHasPermissionAdmin(token)){
-        return res.json({
-            success: false,
-            cause: 'unauthorized',
-            message: 'Vous n\'avez pas les permissions nécessaires'
-        });
-    } else {
+    try {
 
         const { id, onglet } = req.query;
         const { monsters } = req.body;
@@ -100,6 +88,12 @@ async function desaffecter(req, res) {
             });
         }
 
+    } catch(error){
+        return res.json({
+            success: false,
+            cause: 'desaffectation_failed',
+            message: 'La désaffectation a échouée'
+        });
     }
 }
 

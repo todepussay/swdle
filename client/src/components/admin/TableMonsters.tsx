@@ -148,10 +148,7 @@ function TableMonster({ openModalDelete, openModalUpdate, updateData }: TableMon
                                     </Button>
 
                                     <Button 
-                                        color="danger" 
-                                        disabled={
-                                            monster.skills.length > 0
-                                        }
+                                        color="danger"
                                         onClick={() => {
                                             openModalDelete(monster.id);
                                         }}

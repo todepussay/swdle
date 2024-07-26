@@ -38,313 +38,164 @@ async function getSkillByMonsterId(monsterId) {
 
 async function getSkills(req, res){
     const page = req.query.page;
-    const token = req.headers.authorization.split(" ")[1];
     const search = req.query.search + "%";
+
+    db.query(
+        `
+        SELECT
+            COUNT(*) as total
+        FROM skill s
+        LEFT JOIN monster_skill ms ON s.id = ms.skill_id
+        LEFT JOIN monster m ON ms.monster_id = m.id
+        WHERE m.name LIKE ?
+        `,
+        [search],
+        (err, result) => {
+            if(err) throw err;
+            let totalPage = Math.ceil(result[0].total / PaginationLimit);
+
+            db.query(
+                `
+                SELECT
+                    s.id,
+                    s.name,
+                    s.slot,
+                    s.passive,
+                    s.icon_filename,
+                    m.id AS monster_id,
+                    m.name AS monster_name,
+                    m.image_filename AS monster_image_pathname
+                FROM skill s
+                LEFT JOIN monster_skill ms ON s.id = ms.skill_id
+                LEFT JOIN monster m ON ms.monster_id = m.id
+                WHERE m.name LIKE ?
+                ORDER BY m.natural_stars ASC, m.name ASC, s.slot ASC
+                LIMIT ? OFFSET ?
+                `,
+                [search, PaginationLimit, (page - 1) * PaginationLimit],
+                async (err, result) => {
+                    if(err) throw err;
+
+                    const skills = await Promise.all(
+                        result.map(async skill => {
+                            return {
+                                ...skill,
+                                monster_image: await getImage(skill.monster_image_pathname, "monsters"),
+                                skill_image: await getImage(skill.icon_filename, "skills")
+                            }
+                        })
+                    );
     
-    if(!UserHasPermissionAdmin(token)){
-        return res.json({
-            success: false,
-            cause: 'unauthorized',
-            message: 'Vous n\'avez pas les permissions nécessaires'
-        });
-    } else {
-
-        db.query(
-            `
-            SELECT
-                COUNT(*) as total
-            FROM skill s
-            LEFT JOIN monster_skill ms ON s.id = ms.skill_id
-            LEFT JOIN monster m ON ms.monster_id = m.id
-            WHERE m.name LIKE ?
-            `,
-            [search],
-            (err, result) => {
-                if(err) throw err;
-                let totalPage = Math.ceil(result[0].total / PaginationLimit);
-
-                db.query(
-                    `
-                    SELECT
-                        s.id,
-                        s.name,
-                        s.slot,
-                        s.passive,
-                        s.icon_filename,
-                        m.id AS monster_id,
-                        m.name AS monster_name,
-                        m.image_filename AS monster_image_pathname
-                    FROM skill s
-                    LEFT JOIN monster_skill ms ON s.id = ms.skill_id
-                    LEFT JOIN monster m ON ms.monster_id = m.id
-                    WHERE m.name LIKE ?
-                    ORDER BY m.natural_stars ASC, m.name ASC, s.slot ASC
-                    LIMIT ? OFFSET ?
-                    `,
-                    [search, PaginationLimit, (page - 1) * PaginationLimit],
-                    async (err, result) => {
-                        if(err) throw err;
-
-                        const skills = await Promise.all(
-                            result.map(async skill => {
-                                return {
-                                    ...skill,
-                                    monster_image: await getImage(skill.monster_image_pathname, "monsters"),
-                                    skill_image: await getImage(skill.icon_filename, "skills")
-                                }
-                            })
-                        );
-        
-                        res.json({
-                            success: true,
-                            totalPage: totalPage,
-                            data: skills
-                        });
-        
-                    }
-                )
-            }
-        )
-    }
+                    res.json({
+                        success: true,
+                        totalPage: totalPage,
+                        data: skills
+                    });
+    
+                }
+            )
+        }
+    )
 }
 
 function getSkill(req, res){
-    const token = req.headers.authorization.split(" ")[1];
     const id = req.params.id;
     
-    if(!UserHasPermissionAdmin(token)){
-        return res.json({
-            success: false,
-            cause: 'unauthorized',
-            message: 'Vous n\'avez pas les permissions nécessaires'
-        });
-    } else {
-        db.query(
-            `
-            SELECT
-                s.id,
-                s.name,
-                s.slot,
-                s.passive,
-                s.icon_filename,
-                m.id AS monster_id,
-                m.name AS monster_name,
-                m.image_filename AS monster_image_pathname
-            FROM skill s
-            LEFT JOIN monster_skill ms ON s.id = ms.skill_id
-            LEFT JOIN monster m ON ms.monster_id = m.id
-            WHERE s.id = ?
-            ORDER BY m.natural_stars ASC, m.name ASC, s.slot ASC
-            `,
-            [id],
-            (err, result) => {
-                if(err) throw err;
+    db.query(
+        `
+        SELECT
+            s.id,
+            s.name,
+            s.slot,
+            s.passive,
+            s.icon_filename,
+            m.id AS monster_id,
+            m.name AS monster_name,
+            m.image_filename AS monster_image_pathname
+        FROM skill s
+        LEFT JOIN monster_skill ms ON s.id = ms.skill_id
+        LEFT JOIN monster m ON ms.monster_id = m.id
+        WHERE s.id = ?
+        ORDER BY m.natural_stars ASC, m.name ASC, s.slot ASC
+        `,
+        [id],
+        (err, result) => {
+            if(err) throw err;
 
-                if(result.length === 0){
-                    return res.json({
-                        success: false,
-                        message: 'Compétence introuvable'
-                    });
-                }
-
-                const skill = {
-                    ...result[0],
-                    monster_image: getImage(result[0].monster_image_pathname, "monsters"),
-                    skill_image: getImage(result[0].icon_filename, "skills")
-                }
-
-                res.json({
-                    success: true,
-                    data: skill
+            if(result.length === 0){
+                return res.json({
+                    success: false,
+                    message: 'Compétence introuvable'
                 });
             }
-        )
-    }
 
-}
+            const skill = {
+                ...result[0],
+                monster_image: getImage(result[0].monster_image_pathname, "monsters"),
+                skill_image: getImage(result[0].icon_filename, "skills")
+            }
 
-async function addSkill(req, res){
-    const token = req.headers.authorization.split(" ")[1];
-    
-    if(!UserHasPermissionAdmin(token)){
-        return res.json({
-            success: false,
-            cause: 'unauthorized',
-            message: 'Vous n\'avez pas les permissions nécessaires'
-        });
-    } else {
-        const { name, monsterId, slot, passive, image } = req.body;
-
-        const pathImage = await addImage(image, 'skills');
-
-        if(!pathImage){
-            return res.json({
-                success: false,
-                cause: 'invalid_image',
-                message: 'L\'image n\'est pas valide'
+            res.json({
+                success: true,
+                data: skill
             });
         }
-
-        db.query(
-            `
-            INSERT INTO skill (name, slot, passive, icon_filename) VALUES (?, ?, ?, ?)
-            `,
-            [name, slot, passive, pathImage],
-            (err, result) => {
-                if(err) throw err;
-
-                if(err){
-                    return res.json({
-                        success: false,
-                        message: 'Erreur lors de l\'ajout de la compétence'
-                    });
-                } else {
-                    db.query(
-                        `
-                        INSERT INTO monster_skill (monster_id, skill_id) VALUES (?, ?)
-                        `,
-                        [monsterId, result.insertId],
-                        (err, result) => {
-                            if(err) throw err;
-
-                            if(err){
-                                return res.json({
-                                    success: false,
-                                    message: 'Erreur lors de l\'ajout de la compétence au monstre'
-                                });
-                            } else {
-                                return res.json({
-                                    success: true,
-                                    message: 'Compétence ajoutée'
-                                });
-                            }
-                        }
-                    )
-                }
-            }
-        )
-    }
+    )
 
 }
 
-function deleteSkill(req, res){
-    const token = req.headers.authorization.split(" ")[1];
-    const id = req.params.id;
-    
-    if(!UserHasPermissionAdmin(token)){
-        return res.json({
+async function addSkillService(req, res){
+    try {
+        const { name, monsterId, slot, passive, image } = req.body;
+        const pathImage = await addImage(image, 'skills');
+
+        const result = await addSkill({ name, monsterId, slot, passive, pathImage });
+
+        res.json(result);
+    } catch(err){
+        res.json({
             success: false,
-            cause: 'unauthorized',
-            message: 'Vous n\'avez pas les permissions nécessaires'
+            message: 'Erreur lors de l\'ajout de la compétence'
         });
-    } else {
-        db.query(
-            `
-            DELETE FROM monster_skill WHERE skill_id = ?
-            `,
-            [id],
-            (err, result) => {
-                if(err) throw err;
-                
-                db.query(
-                    `
-                    DELETE FROM skill WHERE id = ?
-                    `,
-                    [id],
-                    (err, result) => {
-                        if(err) throw err;
-
-                        if(err){
-                            return res.json({
-                                success: false,
-                                message: 'Erreur lors de la suppression de la compétence'
-                            });
-                        } else {
-                            return res.json({
-                                success: true,
-                                message: 'Compétence supprimée'
-                            });
-                        }
-                    }
-                )
-            }
-        )
     }
-
 }
 
-function updateSkill(req, res){
-    const token = req.headers.authorization.split(" ")[1];
-    const id = req.params.id;
-    
-    if(!UserHasPermissionAdmin(token)){
-        return res.json({
+function deleteSkillService(req, res){
+    try {
+        const id = req.params.id;
+
+        const result = deleteSkill(id);
+
+        res.json(result);
+    } catch(err){
+        res.json({
             success: false,
-            cause: 'unauthorized',
-            message: 'Vous n\'avez pas les permissions nécessaires'
+            message: 'Erreur lors de la suppression de la compétence'
         });
-    } else {
+    }
+}
+
+function updateSkillService(req, res){
+    try {
+        const id = req.params.id;
         const { name, monsterId, slot, passive } = req.body;
 
-        db.query(
-            `
-            UPDATE skill
-            SET name = ?, slot = ?, passive = ?
-            WHERE id = ?
-            `,
-            [name, slot, passive, id],
-            (err, result) => {
-                if(err) throw err;
+        const result = updateSkill(id, { name, monsterId, slot, passive });
 
-                if(err){
-                    return res.json({
-                        success: false,
-                        message: 'Erreur lors de la modification de la compétence'
-                    });
-                } else {
-                    db.query(
-                        `
-                        DELETE FROM monster_skill WHERE skill_id = ?
-                        `,
-                        [id],
-                        (err, result) => {
-                            if(err) throw err;
-
-                            db.query(
-                                `
-                                INSERT INTO monster_skill (monster_id, skill_id) VALUES (?, ?)
-                                `,
-                                [monsterId, id],
-                                (err, result) => {
-                                    if(err) throw err;
-
-                                    if(err){
-                                        return res.json({
-                                            success: false,
-                                            message: 'Erreur lors de la modification de la compétence'
-                                        });
-                                    } else {
-                                        return res.json({
-                                            success: true,
-                                            message: 'Compétence modifiée'
-                                        });
-                                    }
-                                }
-                            )
-                        }
-                    )
-                }
-            }
-        )
+        res.json(result);
+    } catch(err){
+        res.json({
+            success: false,
+            message: 'Erreur lors de la modification de la compétence'
+        });
     }
-
 }
 
 module.exports = {
     getSkillByMonsterId,
     getSkills,
     getSkill,
-    addSkill,
-    deleteSkill,
-    updateSkill
+    addSkillService,
+    deleteSkillService,
+    updateSkillService
 }

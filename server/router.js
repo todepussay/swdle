@@ -1,14 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const { verifyDaily } = require('./services/DailyPick');
-const { getAllMonsters, getMonsters, addMonster, getMonster, deleteMonster, updateMonster } = require('./services/Monster');
+const { getAllMonsters, getMonsters, addMonsterService, getMonster, deleteMonsterService, updateMonsterService } = require('./services/Monster');
 const { guessMonster } = require('./services/GuessMonster');
 const { login, signin } = require("./services/Auth");
-const { getFamilies, addFamily, getFamily, deleteFamily, updateFamily } = require("./services/Family");
-const { getSkills, getSkill, addSkill, deleteSkill, updateSkill } = require("./services/Skill");
-const { getBuffs, getBuff, addBuff, deleteBuff, updateBuff } = require("./services/Buff");
-const { getDebuffs, getDebuff, addDebuff, deleteDebuff, updateDebuff } = require("./services/Debuff");
+const { getFamiliesService, addFamilyService, getFamilyService, deleteFamilyService, updateFamilyService } = require("./services/Family");
+const { getSkills, getSkill, addSkillService, deleteSkillService, updateSkillService } = require("./services/Skill");
+const { getBuffs, getBuff, addBuffService, deleteBuffService, updateBuffService } = require("./services/Buff");
+const { getDebuffs, getDebuff, addDebuffService, deleteDebuffService, updateDebuffService } = require("./services/Debuff");
 const { affecter, desaffecter } = require("./services/Affectation");
+const { UserHasPermissionAdmin } = require('./services/User');
 
 router.get("/getAllMonsters", getAllMonsters);
 
@@ -22,42 +23,42 @@ router.post("/auth/signin", signin);
 
 // Admin Router :
 // Router Family
-router.get("/admin/families", getFamilies);
-router.get("/admin/families/:id", getFamily);
-router.post("/admin/families/add", addFamily);
-router.put("/admin/families/:id", updateFamily);
-router.delete("/admin/families/:id", deleteFamily);
+router.get("/admin/families", UserHasPermissionAdmin, getFamiliesService);
+router.get("/admin/families/:id", UserHasPermissionAdmin, getFamilyService);
+router.post("/admin/families/add", UserHasPermissionAdmin, addFamilyService);
+router.put("/admin/families/:id", UserHasPermissionAdmin, updateFamilyService);
+router.delete("/admin/families/:id", UserHasPermissionAdmin, deleteFamilyService);
 
 // Router Monster
-router.get("/admin/monsters", getMonsters);
-router.get("/admin/monsters/:id", getMonster);
-router.post("/admin/monsters/add", addMonster);
-router.put("/admin/monsters/:id", updateMonster);
-router.delete("/admin/monsters/:id", deleteMonster);
+router.get("/admin/monsters", UserHasPermissionAdmin, getMonsters);
+router.get("/admin/monsters/:id", UserHasPermissionAdmin, getMonster);
+router.post("/admin/monsters/add", UserHasPermissionAdmin, addMonsterService);
+router.put("/admin/monsters/:id", UserHasPermissionAdmin, updateMonsterService);
+router.delete("/admin/monsters/:id", UserHasPermissionAdmin, deleteMonsterService);
 
 // Router Skill
-router.get("/admin/skills", getSkills);
-router.get("/admin/skills/:id", getSkill);
-router.post("/admin/skills/add", addSkill);
-router.put("/admin/skills/:id", updateSkill);
-router.delete("/admin/skills/:id", deleteSkill);
+router.get("/admin/skills", UserHasPermissionAdmin, getSkills);
+router.get("/admin/skills/:id", UserHasPermissionAdmin, getSkill);
+router.post("/admin/skills/add", UserHasPermissionAdmin, addSkillService);
+router.put("/admin/skills/:id", UserHasPermissionAdmin, updateSkillService);
+router.delete("/admin/skills/:id", UserHasPermissionAdmin, deleteSkillService);
 
 // Router Buff
-router.get("/admin/buffs", getBuffs);
-router.get("/admin/buffs/:id", getBuff);
-router.post("/admin/buffs/add", addBuff);
-router.put("/admin/buffs/:id", updateBuff);
-router.delete("/admin/buffs/:id", deleteBuff);
+router.get("/admin/buffs", UserHasPermissionAdmin, getBuffs);
+router.get("/admin/buffs/:id", UserHasPermissionAdmin, getBuff);
+router.post("/admin/buffs/add", UserHasPermissionAdmin, addBuffService);
+router.put("/admin/buffs/:id", UserHasPermissionAdmin, updateBuffService);
+router.delete("/admin/buffs/:id", UserHasPermissionAdmin, deleteBuffService);
 
 // Router Debuff
-router.get("/admin/debuffs", getDebuffs);
-router.get("/admin/debuffs/:id", getDebuff);
-router.post("/admin/debuffs/add", addDebuff);
-router.put("/admin/debuffs/:id", updateDebuff);
-router.delete("/admin/debuffs/:id", deleteDebuff);
+router.get("/admin/debuffs", UserHasPermissionAdmin, getDebuffs);
+router.get("/admin/debuffs/:id", UserHasPermissionAdmin, getDebuff);
+router.post("/admin/debuffs/add", UserHasPermissionAdmin, addDebuffService);
+router.put("/admin/debuffs/:id", UserHasPermissionAdmin, updateDebuffService);
+router.delete("/admin/debuffs/:id", UserHasPermissionAdmin, deleteDebuffService);
 
 // Router Affectation
-router.post("/admin/affecter", affecter);
-router.post("/admin/desaffecter", desaffecter);
+router.post("/admin/affecter", UserHasPermissionAdmin, affecter);
+router.post("/admin/desaffecter", UserHasPermissionAdmin, desaffecter);
 
 module.exports = router;
