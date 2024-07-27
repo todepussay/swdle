@@ -53,8 +53,6 @@ function login(req, res){
                 });
             }
 
-            console.log(process.env.JWT_SECRET);
-
             const token = jsonwebtoken.sign(
                 { 
                     id: result[0].id, 
@@ -64,7 +62,7 @@ function login(req, res){
                     role_name: result[0].role_name
                 },
                 process.env.JWT_SECRET,
-                { expiresIn: '24h' }
+                { expiresIn: process.env.JWT_EXPIRES_IN }
             );
 
             console.log('Connexion réussie')
