@@ -1,6 +1,7 @@
 const { db } = require('./db');
 const Jimp = require('jimp');
 const { getImage, addImage, deleteImage } = require('./Image');
+const { addSkill, deleteSkill, updateSkill } = require('../Entity/Skill');
 const { UserHasPermissionAdmin } = require('./User');
 const PaginationLimit = parseInt(process.env.PAGINATION_LIMIT);
 
@@ -160,11 +161,11 @@ async function addSkillService(req, res){
     }
 }
 
-function deleteSkillService(req, res){
+async function deleteSkillService(req, res){
     try {
         const id = req.params.id;
 
-        const result = deleteSkill(id);
+        const result = await deleteSkill(id);
 
         res.json(result);
     } catch(err){
@@ -175,12 +176,12 @@ function deleteSkillService(req, res){
     }
 }
 
-function updateSkillService(req, res){
+async function updateSkillService(req, res){
     try {
         const id = req.params.id;
         const { name, monsterId, slot, passive } = req.body;
 
-        const result = updateSkill(id, { name, monsterId, slot, passive });
+        const result = await updateSkill(id, { name, monsterId, slot, passive });
 
         res.json(result);
     } catch(err){

@@ -121,7 +121,7 @@ async function updateSkill(id, { name, monsterId, slot, passive, pathImage }){
                                             success: false,
                                             message: 'Erreur lors de la modification de la compétence'
                                         });
-                                    } 
+                                    }
                                     
                                     return resolve({
                                         success: true,
