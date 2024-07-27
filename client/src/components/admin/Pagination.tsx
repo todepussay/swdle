@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import '@styles/admin/Pagination.css';
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import Button from '@components/Button';
+import Button from '@components/admin/Button';
 
 
 type PaginationProps = {

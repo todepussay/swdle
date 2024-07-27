@@ -14,7 +14,7 @@ import defense from "@assets/defense.png";
 import hp from "@assets/hp.png";
 import support from "@assets/support.png";
 import star from "@assets/star.png";
-import Button from "@components/Button";
+import Button from '@components/admin/Button';
 import { FaEdit, FaTrash  } from "react-icons/fa";
 import useDebounce from '@/services/useDebounce';
 

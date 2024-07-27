@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "@styles/admin/Boolean.css";
-import Button from "@components/Button";
+import Button from '@components/admin/Button';
 
 interface BooleanProps {
     defaultValue?: boolean;

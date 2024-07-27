@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "@styles/admin/DataManagment.css";
 import { IoAddCircleOutline } from "react-icons/io5";
-import Button from "@components/Button";
+import Button from '@components/admin/Button';
 import Modal from "@components/admin/Modal";
 import { useNavigate } from "react-router-dom";
 

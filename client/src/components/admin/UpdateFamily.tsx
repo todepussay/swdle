@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import UserContext from '@/contexts/UserContext';
 import Input from '@components/admin/Input';
-import Button from '@components/Button';
+import Button from '@components/admin/Button';
 import { FaEdit } from 'react-icons/fa';
 import "@styles/admin/AddForm.css";
 import { toast } from 'react-toastify';

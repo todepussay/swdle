@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import '@styles/Admin/AddForm.css';
-import Button from '@components/Button';
+import Button from '@components/admin/Button';
 import Input from '@components/admin/Input';
 import Select from '@components/admin/Select';
 import Boolean from '@components/admin/Boolean';

@@ -3,7 +3,7 @@ import axios from "axios";
 import UserContext from "@/contexts/UserContext";
 import Pagination from "@components/admin/Pagination";
 import { useNavigate } from 'react-router-dom';
-import Button from "@components/Button";
+import Button from '@components/admin/Button';
 import "@styles/admin/TableData.css";
 import { FaEdit, FaTrash, FaArrowsAltH } from "react-icons/fa";
 import useDebounce from "@services/useDebounce";

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import '@styles/Admin/AddForm.css';
-import Button from '@components/Button';
+import Button from '@components/admin/Button';
 import Input from '@components/admin/Input';
 import { IoAddCircleOutline } from "react-icons/io5";
 import axios from 'axios';
