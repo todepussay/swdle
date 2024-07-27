@@ -1,4 +1,5 @@
 export default interface Indice {
-    indice1: string;
-    indice2: string;
+    unlock: number;
+    img: string;
+    selected: boolean;
 };

@@ -1,21 +1,26 @@
 header {
-    height: 10%;
+    height: 8%;
     width: 100%;
     background: var(--yellow-light);
     background: radial-gradient(circle, var(--yellow-light) 70%, var(--yellow-dark) 100%);
     z-index: 1;
     display: flex;
     align-items: center;
-    padding: 0 40px;
+    padding: 0 50px;
     gap: 20px;
     box-shadow: inset 0px 10px 15px -3px rgba(0,0,0,0.1),0px 10px 15px -3px rgba(0,0,0,0.1);
 }
+
+.obelix {
+    width: 30px;
+    height: 30px;
+}
   
 h1, h2, h1 a {
-    font-size: 55px;
+    font-size: 40px;
     font-weight: 900;
     letter-spacing: -1px;
-    -webkit-text-stroke-width: 3px;
+    -webkit-text-stroke-width: 2px;
     background: linear-gradient(180deg, var(--font-color-top) 20%, var(--font-color-bottom) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -44,10 +49,5 @@ h1, h2, h1 a {
         font-size: 32px;
         font-weight: 700;
         -webkit-text-stroke-width: 1px;
-    }
-
-    .obelix {
-        width: 30px;
-        height: 30px;
     }
 }

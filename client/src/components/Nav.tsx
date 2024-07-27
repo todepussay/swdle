@@ -28,7 +28,7 @@ function Nav({ onglet, setOnglet }: NavProps){
                         <span>Classique</span>
                     </Link>
                 </li>
-                {/* <li>
+                <li>
                     <Link className={onglet === "skill" ? "active" : ""} to={"/skill"} onClick={() => setOnglet("skill")}>
                         <img src={skill} alt="Skill" />
                         <span>Compétence</span>
@@ -39,7 +39,7 @@ function Nav({ onglet, setOnglet }: NavProps){
                         <img src={pixel} alt="Pixel" />
                         <span>Pixelisé</span>
                     </Link>
-                </li> */}
+                </li>
             </ul>
 
             <div className="tools">

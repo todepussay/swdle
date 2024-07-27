@@ -1,6 +1,7 @@
 const { db } = require('./db');
 const { getDailyPick } = require('./DailyPick');
 const Jimp = require('jimp');
+const { getImage } = require('./Image');
 
 const guessMonster = async (req, res) => {
 
@@ -30,7 +31,7 @@ const guessMonster = async (req, res) => {
                     let obj = {
                         correct: monster.id === dailyPick.id ? true : false,
                         date: dailyPick.date,
-                        indice: {},
+                        indices: [],
                         try: number_try,
                         information: {
                             id_monster: monster.id,
@@ -57,26 +58,9 @@ const guessMonster = async (req, res) => {
                         }
                     }
 
-                    if(number_try >= 6){
-                        obj.indice["indice1"] = dailyPick.indice_skill;
-                    } 
+                    const indices = await generateIndices(dailyPick, number_try);
 
-                    if(number_try >= 12){
-                        try {
-                            const image = await Jimp.read("./asset/monsters/" + dailyPick.image_filename);
-                            const pixelSize = process.env.INDICE_2_PIXEL_SIZE;
-
-                            image.pixelate(pixelSize, (err, image) => {
-                                image.getBase64(Jimp.AUTO, (err, base64) => {
-                                    obj.indice["indice2"] = base64;
-                                });
-                            });
-
-                        } catch (error) {
-                            console.log(error);
-                        }
-
-                    }
+                    obj.indices = indices;
 
                     res.status(200).json(obj);
 
@@ -84,6 +68,47 @@ const guessMonster = async (req, res) => {
             }
         }
     )
+}
+
+async function generateIndices(dailyPick, number_try){
+    return new Promise(async (resolve, reject) => {
+        let indices = [];
+
+        if(number_try >= 6){
+            try {
+                let img = await getImage(dailyPick.indice_skill, "skills");
+                indices.push({
+                    id: 0,
+                    img: img
+                });
+            } catch (error) {
+                console.log("Error getting image for skill:", error);
+            }
+        } 
+
+        if(number_try >= 12){
+            try {
+                const image = await Jimp.read("./asset/monsters/" + dailyPick.image_filename);
+                const pixelSize = process.env.INDICE_2_PIXEL_SIZE;
+
+                image.pixelate(pixelSize, (err, image) => {
+                    image.getBase64(Jimp.AUTO, (err, base64) => {
+                        indices.push(
+                            {
+                                id: 1,
+                                img: base64
+                            }
+                        )
+                    });
+                });
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        
+        resolve(indices);
+    });
 }
 
 module.exports = {

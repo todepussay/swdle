@@ -1,5 +1,5 @@
 import React from 'react';
-import '@styles/Button.css';
+import '@styles/admin/Button.css';
 import { FaRegCheckCircle } from "react-icons/fa";
 import { MdErrorOutline } from "react-icons/md";
 

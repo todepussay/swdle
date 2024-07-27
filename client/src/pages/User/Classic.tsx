@@ -20,6 +20,7 @@ import support from "@assets/support.png";
 import hp from "@assets/hp.png";
 import indice_img from "@assets/indice.png";
 import monster from "@assets/monster.png";
+import Indices from "@components/Indices";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -27,6 +28,19 @@ type ClassicProps = {
     families: Family[];
     width: number;
 };
+
+const initIndices = [
+    {
+        unlock: 6,
+        img: "",
+        selected: false
+    },
+    {
+        unlock: 12,
+        img: "",
+        selected: false
+    }
+];
 
 function Classic({ families, width }: ClassicProps){
 
@@ -37,10 +51,7 @@ function Classic({ families, width }: ClassicProps){
     const [tries, setTries] = useState<number[]>([]);
     const [triesMonster, setTriesMonster] = useState<GuessMonster[]>([]);
     const [indiceSelected, setIndiceSelected] = useState<string>("");
-    const [indice, setIndice] = useState<Indice>({
-        indice1: "",
-        indice2: ""
-    });
+    const [indices, setIndices] = useState<Indice[]>(initIndices);
     const [correct, setCorrect] = useState<GuessMonster>();
 
     const input = useRef<HTMLInputElement>(null);
@@ -114,42 +125,27 @@ function Classic({ families, width }: ClassicProps){
             setPropositionFamilies([]);
             setSearch("");
 
-            if(triesMonster.length + 1 >= 4){
-                setIndice({
-                    indice1: res.data.indice.indice1,
-                    indice2: ""
-                });
-                Cookies.set("classic", JSON.stringify({
-                    date: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).date : new Date(),
-                    tries: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).tries : [],
-                    indice: {
-                        indice1: res.data.indice.indice1,
-                        indice2: ""
-                    }
-                }))
-            }
+            setIndices(prev => 
+                prev.map((indice: Indice, index: number) => 
+                    res.data.try >= indice.unlock && index === res.data.indices[index].id ? {
+                        ...indice,
+                        img: res.data.indices[index].img
+                    } : indice
+                )
+            );
 
-            if(triesMonster.length + 1 >= 12){
-                setIndice({
-                    indice1: res.data.indice.indice1,
-                    indice2: res.data.indice.indice2
-                });
-                Cookies.set("classic", JSON.stringify({
-                    date: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).date : new Date(),
-                    tries: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).tries : [],
-                    indice: {
-                        indice1: res.data.indice.indice1,
-                        indice2: res.data.indice.indice2
-                    }
-                }))
-            }
+            Cookies.set("classic", JSON.stringify({
+                date: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).date : new Date(),
+                tries: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).tries : [],
+                indices: indices
+            }));
 
             let triesJSON = Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).tries : [];
             triesJSON.push(id);
             Cookies.set("classic", JSON.stringify({
                 date: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).date : new Date(),
                 tries: triesJSON,
-                indice: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).indice : {}
+                indices: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).indices : []
             }));
 
             if(res.data.correct){
@@ -166,7 +162,7 @@ function Classic({ families, width }: ClassicProps){
             Cookies.set("classic", JSON.stringify({
                 date: new Date(),
                 tries: [],
-                indice: {}
+                indices: initIndices
             }));
         } else {
             let savedClassic = JSON.parse(Cookies.get("classic")!);
@@ -183,6 +179,18 @@ function Classic({ families, width }: ClassicProps){
                     resultat.push(res.data);
                     if(i === triesJSON.length - 1){
                         setTriesMonster(resultat);
+                        
+                        const lastIndices = resultat[resultat.length - 1].indices;
+
+                        setIndices(prev => 
+                            prev.map((indice: Indice, index: number) => 
+                                resultat.length >= indice.unlock && index === lastIndices[index].id ? {
+                                    ...indice,
+                                    img: lastIndices[index].img
+                                } : indice
+                            )
+                        );
+
                         if(resultat[resultat.length - 1].correct){
                             setCorrect(resultat[resultat.length - 1]);
                             setTimeout(() => {
@@ -193,12 +201,9 @@ function Classic({ families, width }: ClassicProps){
                 })
             }
 
-            const savedIndice = savedClassic.indice;
-            if(savedIndice){
-                setIndice({
-                    indice1: savedIndice.indice1 || "",
-                    indice2: savedIndice.indice2 || ""
-                });
+            const savedIndices = savedClassic.indices;
+            if(savedIndices){
+                setIndices(savedIndices);
             }
         }
 
@@ -209,8 +214,12 @@ function Classic({ families, width }: ClassicProps){
     }, []);
 
     return (
+        console.log(indices),
         <div className="Classic">
-            {
+
+            <Indices tries={triesMonster.length} indices={indices} />
+
+            {/* {
                 triesMonster.length > 0 ? (
                     <div className="indices">
                         <div className="list-indices">
@@ -276,7 +285,7 @@ function Classic({ families, width }: ClassicProps){
                         <span>Bonne chance !</span>
                     </div>
                 )
-            }
+            } */}
 
             <div className="search-zone">
                 <input 
