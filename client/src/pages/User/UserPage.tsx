@@ -17,7 +17,6 @@ const apiUrl = import.meta.env.VITE_API_URL;
 function UserPage(){
 
     const [onglet, setOnglet] = useState<string>('home');
-    const [families, setFamilies] = useState<Family[]>([]);
     const [width, setWidth] = useState<number>(window.innerWidth);
     const navigate = useNavigate();
 
@@ -35,11 +34,6 @@ function UserPage(){
         function handleResize(){
             setWidth(window.innerWidth);
         }
-
-        axios.get(`${apiUrl}/getAllMonsters`)
-        .then((res) => {
-            setFamilies(res.data);
-        })
 
         if(Cookies.get("classic")){
             
@@ -85,7 +79,7 @@ function UserPage(){
                     <div className="game">
                         <Routes>
                             <Route path="/" element={<Home onglet={onglet} setOnglet={setOnglet} width={width} />} />
-                            <Route path="/classic" element={<Classic families={families} width={width} />} />
+                            <Route path="/classic" element={<Classic width={width} />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/signin" element={<Signin />} />
                         </Routes>

@@ -36,7 +36,6 @@ const guessMonster = async (req, res) => {
                         information: {
                             id_monster: monster.id,
                             name_monster: monster.name,
-                            image_monster: monster.image_filename,
                             natural_stars_monster: monster.natural_stars,
                             natural_stars_good: monster.natural_stars === dailyPick.natural_stars,
                             natural_stars_more: monster.natural_stars < dailyPick.natural_stars,
@@ -54,9 +53,14 @@ const guessMonster = async (req, res) => {
                             leader_skill_good: monster.leader_skill === dailyPick.leader_skill,
                             fusion_food_monster: monster.fusion_food === 1 ? true : false,
                             fusion_food_good: monster.fusion_food === dailyPick.fusion_food,
-                            date: dailyPick.date
+                            date: dailyPick.date,
+                            image_monster: null
                         }
                     }
+
+                    const image = await getImage(monster.image_filename, "monsters");
+
+                    obj.information.image_monster = image;
 
                     const indices = await generateIndices(dailyPick, number_try);
 

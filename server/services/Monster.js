@@ -29,7 +29,7 @@ const getAllMonsters = async (req, res) => {
                 
                 let monsters = [];
 
-                result.forEach(monster => {
+                result.forEach(async monster => {
                     if(monsters.findIndex(family => family.family_id === monster.family_id) === -1){
                         monsters.push({
                             family_id: monster.family_id,
@@ -38,18 +38,18 @@ const getAllMonsters = async (req, res) => {
                                 {
                                     monster_id: monster.monster_id,
                                     monster_name: monster.monster_name,
-                                    monster_image: monster.monster_image,
+                                    monster_image: await getImage(monster.monster_image, "monsters"),
                                     monster_element: monster.monster_element
                                 }
                             ]
                         })
                     } else {
-                        monsters.forEach(family => {
+                        monsters.forEach(async family => {
                             if(family.family_id === monster.family_id){
                                 family.monsters.push({
                                     monster_id: monster.monster_id,
                                     monster_name: monster.monster_name,
-                                    monster_image: monster.monster_image,
+                                    monster_image: await getImage(monster.monster_image, "monsters"),
                                     monster_element: monster.monster_element    
                                 })
                             }

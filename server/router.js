@@ -10,15 +10,19 @@ const { getBuffs, getBuff, addBuffService, deleteBuffService, updateBuffService 
 const { getDebuffs, getDebuff, addDebuffService, deleteDebuffService, updateDebuffService } = require("./services/Debuff");
 const { affecter, desaffecter } = require("./services/Affectation");
 const { UserHasPermissionAdmin } = require('./services/User');
+const { search } = require('./services/Search');
 
-router.get("/getAllMonsters", getAllMonsters);
+// router.get("/getAllMonsters", getAllMonsters);
 
 router.post("/guessMonster", guessMonster);
 
 router.get("/verifyDaily", verifyDaily);
 
-router.post("/auth/login", login);
+// Search Router :
+router.get("/search", search);
 
+// Auth Router :
+router.post("/auth/login", login);
 router.post("/auth/signin", signin);
 
 // Admin Router :

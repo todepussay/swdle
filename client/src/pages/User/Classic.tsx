@@ -21,11 +21,12 @@ import hp from "@assets/hp.png";
 import indice_img from "@assets/indice.png";
 import monster from "@assets/monster.png";
 import Indices from "@components/Indices";
+import useDebounce from '@services/useDebounce';
+import e from 'express';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 type ClassicProps = {
-    families: Family[];
     width: number;
 };
 
@@ -42,15 +43,15 @@ const initIndices = [
     }
 ];
 
-function Classic({ families, width }: ClassicProps){
+function Classic({ width }: ClassicProps){
 
-    const [searchMode, setSearchMode] = useState<string>("family");
+    const [searchMode, setSearchMode] = useState<string>("families");
     const [search, setSearch] = useState<string>("");
+    const [ debouncedValue ] = useDebounce(search, 500);
     const [propositionFamilies, setPropositionFamilies] = useState<Family[]>([]);
     const [propositionMonster, setPropositionMonster] = useState<Monster[]>([]);
     const [tries, setTries] = useState<number[]>([]);
     const [triesMonster, setTriesMonster] = useState<GuessMonster[]>([]);
-    const [indiceSelected, setIndiceSelected] = useState<string>("");
     const [indices, setIndices] = useState<Indice[]>(initIndices);
     const [correct, setCorrect] = useState<GuessMonster>();
 
@@ -66,39 +67,39 @@ function Classic({ families, width }: ClassicProps){
             setPropositionFamilies([]);
             setPropositionMonster([]);
         } else {
-            if(searchMode === "family"){
-                let familiesPropo : Family[] = [];
-                familiesPropo = families.filter((family) => {
-                    return family.family_name.toLowerCase().startsWith(valeur.toLowerCase());
-                });
+            // if(searchMode === "family"){
+            //     let familiesPropo : Family[] = [];
+            //     familiesPropo = families.filter((family) => {
+            //         return family.family_name.toLowerCase().startsWith(valeur.toLowerCase());
+            //     });
 
-                familiesPropo.forEach((family) => {
-                    family.monsters = family.monsters.filter((monster) => {
-                        return !triesMonster.some((tryMonster) => {
-                            return tryMonster.information.name_monster === monster.monster_name;
-                        });
-                    });
-                });
+            //     familiesPropo.forEach((family) => {
+            //         family.monsters = family.monsters.filter((monster) => {
+            //             return !triesMonster.some((tryMonster) => {
+            //                 return tryMonster.information.name_monster === monster.monster_name;
+            //             });
+            //         });
+            //     });
 
-                familiesPropo = familiesPropo.filter((family) => {
-                    return family.monsters.length > 0;
-                });
+            //     familiesPropo = familiesPropo.filter((family) => {
+            //         return family.monsters.length > 0;
+            //     });
         
-                setPropositionFamilies(familiesPropo);
-            } else {
-                let monsters : Monster[] = [];
-                families.forEach((family) => {
-                    family.monsters.forEach((monster) => {
-                        if(monster.monster_name.toLowerCase().startsWith(valeur.toLowerCase()) && !triesMonster.some((tryMonster) => {
-                            return tryMonster.information.name_monster === monster.monster_name;
-                        })) {
-                            monsters.push(monster);
-                        }
-                    });
-                });
+            //     setPropositionFamilies(familiesPropo);
+            // } else {
+            //     let monsters : Monster[] = [];
+            //     families.forEach((family) => {
+            //         family.monsters.forEach((monster) => {
+            //             if(monster.monster_name.toLowerCase().startsWith(valeur.toLowerCase()) && !triesMonster.some((tryMonster) => {
+            //                 return tryMonster.information.name_monster === monster.monster_name;
+            //             })) {
+            //                 monsters.push(monster);
+            //             }
+            //         });
+            //     });
 
-                setPropositionMonster(monsters);
-            }
+            //     setPropositionMonster(monsters);
+            // }
         }
     };
 
@@ -106,8 +107,8 @@ function Classic({ families, width }: ClassicProps){
         setPropositionFamilies([]);
         setPropositionMonster([]);
         setSearch("");
-        setSearchMode(searchMode === "family" ? "monster" : "family");
-        Cookies.set("searchMode", searchMode === "family" ? "monster" : "family");
+        setSearchMode(searchMode === "families" ? "monsters" : "families");
+        Cookies.set("searchMode", searchMode === "families" ? "monsters" : "families");
     }
 
     const handleSubmitProposition = (id: number) => {
@@ -213,8 +214,29 @@ function Classic({ families, width }: ClassicProps){
         }
     }, []);
 
+    useEffect(() => {
+        
+        if(search === ""){
+            setPropositionFamilies([]);
+            setPropositionMonster([]);
+        } else {
+            axios.get(`${apiUrl}/search`, {
+                params: {
+                    search: debouncedValue,
+                    searchMode: searchMode
+                }
+            }).then((res) => {
+                if(searchMode === "families"){
+                    setPropositionFamilies(res.data.families);
+                } else {
+                    setPropositionMonster(res.data.monsters);
+                }
+            })
+        }
+
+    }, [debouncedValue]);
+
     return (
-        console.log(indices),
         <div className="Classic">
 
             <Indices tries={triesMonster.length} indices={indices} />
@@ -292,13 +314,13 @@ function Classic({ families, width }: ClassicProps){
                     type="text"
                     placeholder={
                         correct ? "Bravo ! Vous avez trouvé le monstre !" :
-                        searchMode === "family" ? "Rechercher par famille de monstre" : "Rechercher par nom du monstre"
+                        searchMode === "families" ? "Rechercher par famille de monstre" : "Rechercher par nom du monstre"
                     }
                     value={search}
-                    onChange={handleChange}
+                    onChange={(e) => setSearch(e.target.value)}
                     ref={input}
                     onKeyDown={(e) => {
-                        if (e.key === "Enter" && propositionMonster.length > 0 && searchMode === "monster") {
+                        if (e.key === "Enter" && propositionMonster.length > 0 && searchMode === "monsters") {
                             handleSubmitProposition(propositionMonster[0].monster_id);
                         }
                     }}
@@ -312,15 +334,15 @@ function Classic({ families, width }: ClassicProps){
                     onClick={handleChangeSearchMode}
                 >
                     {
-                        searchMode === "family" ? "Famille" : "Monstre"
+                        searchMode === "families" ? "Famille" : "Monstre"
                     }
                 </button>
 
                 {
                     ((propositionFamilies.length > 0) || (propositionMonster.length > 0)) && (
-                        <div className={`proposition ${searchMode === "monster" ? "propostion-monster" : ""}`}>
+                        <div className={`proposition ${searchMode === "monsters" ? "propostion-monster" : ""}`}>
                             {
-                                searchMode === "family" ? (
+                                searchMode === "families" ? (
                                     propositionFamilies.map((family, index) => {
                                         if(family.monsters.length === 0) return null;
                                         return (
@@ -343,7 +365,7 @@ function Classic({ families, width }: ClassicProps){
                                                                         <p className='monster-name'>
                                                                             {monster.monster_name}
                                                                         </p>
-                                                                        <img src={new URL(`../assets/monsters/${monster.monster_image}`, import.meta.url).href} alt="Monster" />
+                                                                        <img src={monster.monster_image} alt="Monster" />
                                                                     </div>
                                                                 )
                                                             })
@@ -369,7 +391,7 @@ function Classic({ families, width }: ClassicProps){
                                                 <p className='monster-name'>
                                                     {monster.monster_name}
                                                 </p>
-                                                <img src={new URL(`../assets/monsters/${monster.monster_image}`, import.meta.url).href} alt="Monster" />
+                                                <img src={monster.monster_image} alt="Monster" />
                                             </div>
                                         )
                                     })
@@ -405,7 +427,7 @@ function Classic({ families, width }: ClassicProps){
                                     return (
                                         <tr key={index}>
                                             <td className='monster-name-hover'>
-                                                <img src={new URL(`../assets/monsters/${element.information.image_monster}`, import.meta.url).href} alt="Monster" />
+                                                <img src={element.information.image_monster} alt="Monster" />
                                                 <span>
                                                     {element.information.name_monster}
                                                 </span>
