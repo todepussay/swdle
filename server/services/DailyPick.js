@@ -30,6 +30,46 @@ const setDailyPick = () => {
                             console.log(err);
                         } else {
                             dailyPick.daily_monster.indice_skill = result2[0].image;
+                            dailyPick.daily_monster.buffs = [];
+                            dailyPick.daily_monster.debuffs = [];
+
+                            db.query(
+                                `
+                                SELECT b.id
+                                FROM monster_buff mb
+                                INNER JOIN buff b ON mb.buff_id = b.id
+                                WHERE mb.monster_id = ?
+                                `,
+                                [result[0].monster_daily_pick_id],
+                                (err, result3) => {
+                                    if(err){
+                                        console.log(err);
+                                    } else {
+                                        result3.forEach(buff => {
+                                            dailyPick.daily_monster.buffs.push(buff.id);
+                                        });
+
+                                        db.query(
+                                            `
+                                            SELECT d.id
+                                            FROM monster_debuff md
+                                            INNER JOIN debuff d ON md.debuff_id = d.id
+                                            WHERE md.monster_id = ?
+                                            `,
+                                            [result[0].monster_daily_pick_id],
+                                            (err, result4) => {
+                                                if(err){
+                                                    console.log(err);
+                                                } else {
+                                                    result4.forEach(debuff => {
+                                                        dailyPick.daily_monster.debuffs.push(debuff.id);
+                                                    });
+                                                }
+                                            }
+                                        )
+                                    }
+                                }
+                            )
                         }
                     })
                 }

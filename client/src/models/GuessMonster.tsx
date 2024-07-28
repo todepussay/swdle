@@ -1,3 +1,6 @@
+import Buff from "@models/Buff";
+import Debuff from "@models/Debuff";
+
 export default interface GuessMonster {
     correct: boolean;
     date: Date;
@@ -25,5 +28,11 @@ export default interface GuessMonster {
         fusion_food_monster: boolean;
         fusion_food_good: boolean;
         date: Date;
+        buffs: Buff[];
+        debuffs: Debuff[];
+        buffs_good: boolean;
+        buffs_partiel: boolean;
+        debuffs_good: boolean;
+        debuffs_partiel: boolean;
     }
 }

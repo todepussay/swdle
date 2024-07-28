@@ -22,7 +22,8 @@ import indice_img from "@assets/indice.png";
 import monster from "@assets/monster.png";
 import Indices from "@components/Indices";
 import useDebounce from '@services/useDebounce';
-import e from 'express';
+import SearchBar from '@components/SearchBar';
+import TableClassic from '@components/TableClassic';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -45,71 +46,14 @@ const initIndices = [
 
 function Classic({ width }: ClassicProps){
 
-    const [searchMode, setSearchMode] = useState<string>("families");
-    const [search, setSearch] = useState<string>("");
-    const [ debouncedValue ] = useDebounce(search, 500);
-    const [propositionFamilies, setPropositionFamilies] = useState<Family[]>([]);
-    const [propositionMonster, setPropositionMonster] = useState<Monster[]>([]);
     const [tries, setTries] = useState<number[]>([]);
     const [triesMonster, setTriesMonster] = useState<GuessMonster[]>([]);
     const [indices, setIndices] = useState<Indice[]>(initIndices);
     const [correct, setCorrect] = useState<GuessMonster>();
+    const [refresh, setRefresh] = useState<boolean>(false);
 
     const input = useRef<HTMLInputElement>(null);
     const correct_ref = useRef<HTMLDivElement>(null);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let valeur : string = e.target.value;
-
-        setSearch(valeur);
-
-        if(valeur === ""){
-            setPropositionFamilies([]);
-            setPropositionMonster([]);
-        } else {
-            // if(searchMode === "family"){
-            //     let familiesPropo : Family[] = [];
-            //     familiesPropo = families.filter((family) => {
-            //         return family.family_name.toLowerCase().startsWith(valeur.toLowerCase());
-            //     });
-
-            //     familiesPropo.forEach((family) => {
-            //         family.monsters = family.monsters.filter((monster) => {
-            //             return !triesMonster.some((tryMonster) => {
-            //                 return tryMonster.information.name_monster === monster.monster_name;
-            //             });
-            //         });
-            //     });
-
-            //     familiesPropo = familiesPropo.filter((family) => {
-            //         return family.monsters.length > 0;
-            //     });
-        
-            //     setPropositionFamilies(familiesPropo);
-            // } else {
-            //     let monsters : Monster[] = [];
-            //     families.forEach((family) => {
-            //         family.monsters.forEach((monster) => {
-            //             if(monster.monster_name.toLowerCase().startsWith(valeur.toLowerCase()) && !triesMonster.some((tryMonster) => {
-            //                 return tryMonster.information.name_monster === monster.monster_name;
-            //             })) {
-            //                 monsters.push(monster);
-            //             }
-            //         });
-            //     });
-
-            //     setPropositionMonster(monsters);
-            // }
-        }
-    };
-
-    const handleChangeSearchMode = () => {
-        setPropositionFamilies([]);
-        setPropositionMonster([]);
-        setSearch("");
-        setSearchMode(searchMode === "families" ? "monsters" : "families");
-        Cookies.set("searchMode", searchMode === "families" ? "monsters" : "families");
-    }
 
     const handleSubmitProposition = (id: number) => {
         if(width > 430){
@@ -121,10 +65,9 @@ function Classic({ width }: ClassicProps){
             number_try: triesMonster.length + 1
         })
         .then((res) => {
+            console.log(res.data);
             setTriesMonster([...triesMonster, res.data]);
-            setPropositionMonster([]);
-            setPropositionFamilies([]);
-            setSearch("");
+            setRefresh(!refresh);
 
             setIndices(prev => 
                 prev.map((indice: Indice, index: number) => 
@@ -210,36 +153,36 @@ function Classic({ width }: ClassicProps){
 
         const savedSearchMode = Cookies.get("searchMode");
         if(savedSearchMode){
-            setSearchMode(savedSearchMode);
+            // setSearchMode(savedSearchMode);
         }
     }, []);
 
-    useEffect(() => {
+    // useEffect(() => {
         
-        if(search === ""){
-            setPropositionFamilies([]);
-            setPropositionMonster([]);
-        } else {
-            axios.get(`${apiUrl}/search`, {
-                params: {
-                    search: debouncedValue,
-                    searchMode: searchMode
-                }
-            }).then((res) => {
-                if(searchMode === "families"){
-                    setPropositionFamilies(res.data.families);
-                } else {
-                    setPropositionMonster(res.data.monsters);
-                }
-            })
-        }
+    //     if(search === ""){
+    //         setPropositionFamilies([]);
+    //         setPropositionMonster([]);
+    //     } else {
+    //         axios.get(`${apiUrl}/search`, {
+    //             params: {
+    //                 search: debouncedValue,
+    //                 searchMode: searchMode
+    //             }
+    //         }).then((res) => {
+    //             if(searchMode === "families"){
+    //                 setPropositionFamilies(res.data.families);
+    //             } else {
+    //                 setPropositionMonster(res.data.monsters);
+    //             }
+    //         })
+    //     }
 
-    }, [debouncedValue]);
+    // }, [debouncedValue]);
 
     return (
         <div className="Classic">
 
-            <Indices tries={triesMonster.length} indices={indices} />
+            {/* <Indices tries={triesMonster.length} indices={indices} /> */}
 
             {/* {
                 triesMonster.length > 0 ? (
@@ -309,7 +252,15 @@ function Classic({ width }: ClassicProps){
                 )
             } */}
 
-            <div className="search-zone">
+            <SearchBar 
+                correct={correct}
+                input={input}
+                handleSubmitProposition={handleSubmitProposition}
+                triesMonster={triesMonster}
+                refresh={refresh}
+            />
+
+            {/* <div className="search-zone">
                 <input 
                     type="text"
                     placeholder={
@@ -339,7 +290,7 @@ function Classic({ width }: ClassicProps){
                 </button>
 
                 {
-                    ((propositionFamilies.length > 0) || (propositionMonster.length > 0)) && (
+                     ((propositionFamilies.length > 0) || (propositionMonster.length > 0)) && (
                         <div className={`proposition ${searchMode === "monsters" ? "propostion-monster" : ""}`}>
                             {
                                 searchMode === "families" ? (
@@ -400,110 +351,16 @@ function Classic({ width }: ClassicProps){
                         </div>
                     )
                 }
-            </div>
+            </div> */}
 
             {
                 triesMonster.length > 0 && (
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Monstre</th>
-                                <th>Etoile Naturelle</th>
-                                <th>Second Eveil Possible</th>
-                                <th>Elément</th>
-                                <th>Type</th>
-                                <th>Famille</th>
-                                <th>Leader Skill</th>
-                                <th>Fusion</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                triesMonster
-                                .sort((a, b) => {
-                                    return b.try - a.try;
-                                })
-                                .map((element, index) => {
-                                    return (
-                                        <tr key={index}>
-                                            <td className='monster-name-hover'>
-                                                <img src={element.information.image_monster} alt="Monster" />
-                                                <span>
-                                                    {element.information.name_monster}
-                                                </span>
-                                            </td>
-                                            <td className={
-                                                    element.information.natural_stars_good ? "good" : 
-                                                    element.information.natural_stars_more ? "bad more" :
-                                                    "bad less"
-                                                }>
-                                                <span>
-                                                    {element.information.natural_stars_monster}
-                                                    {
-                                                        element.information.second_awakened_monster ? (
-                                                            <img src={star_awakened} alt="Second Awakened" />
-                                                        ) : (
-                                                            <img src={star} alt="Star" />
-                                                        )
-                                                    }
-                                                </span>
-                                            </td>
-                                            <td className={element.information.second_awakened_good ? "good" : "bad"}>
-                                                <span>
-                                                    {element.information.second_awakened_monster ? "Oui" : "Non"}
-                                                </span>
-                                            </td>
-                                            <td className={element.information.element_good ? "good" : "bad"}>
-                                                {
-                                                    element.information.element_monster === "fire" ? (
-                                                        <img src={fire} alt="Fire" />
-                                                    ) : element.information.element_monster === "water" ? (
-                                                        <img src={water} alt="Water" />
-                                                    ) : element.information.element_monster === "wind" ? (
-                                                        <img src={wind} alt="Wind" />
-                                                    ) : element.information.element_monster === "light" ? (
-                                                        <img src={light} alt="Light" />
-                                                    ) : (
-                                                        <img src={dark} alt="Dark" />
-                                                    )
-                                                }
-                                            </td>
-                                            <td className={element.information.archetype_good ? "good" : "bad"}>
-                                                {
-                                                    element.information.archetype_monster === "attack" ? (
-                                                        <img src={attack} alt="Attack" />
-                                                    ) : element.information.archetype_monster === "defense" ? (
-                                                        <img src={defense} alt="Defense" />
-                                                    ) : element.information.archetype_monster === "support" ? (
-                                                        <img src={support} alt="Support" />
-                                                    ) : (
-                                                        <img src={hp} alt="HP" />
-                                                    )
-                                                }
-                                            </td>
-                                            <td className={`family-td ${element.information.family_good ? "good" : "bad"}`}>
-                                                <span>
-                                                    {element.information.family_monster_name}
-                                                </span>
-                                            </td>
-                                            <td className={element.information.leader_skill_good ? "good" : "bad"}>
-                                                <span>
-                                                    {element.information.leader_skill_monster ? "Oui" : "Non"}
-                                                </span>
-                                            </td>
-                                            <td className={element.information.fusion_food_good ? "good" : "bad"}>
-                                                <span>
-                                                    {element.information.fusion_food_monster ? "Oui" : "Non"}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </table>
+                    <TableClassic 
+                        triesMonster={triesMonster}
+                    />
                 )
             }
+            
 
             {
                 correct !== undefined && (

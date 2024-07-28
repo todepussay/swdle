@@ -19,7 +19,8 @@
     "react-jwt": "^1.2.1",
     "react-router-dom": "^6.23.1",
     "react-select": "^5.8.0",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.5",
+    "react-tooltip": "^5.27.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

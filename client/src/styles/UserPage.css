@@ -20,6 +20,7 @@
     --button-inside: #29170d;
     --good: #4caf50;
     --bad: #f44336;
+    --particiel: #d97706;
 }
 
 body {
@@ -114,6 +115,13 @@ body {
     background: var(--font-shadow-color);
 }
 
+.react-tooltip {
+    background-color: var(--button-inside) !important;
+    font-size: 20px !important;
+    border-radius: 8px !important;
+    z-index: 1000 !important;
+}
+
 .btn {
     padding: 10px 20px;
     height: 100%;
@@ -121,14 +129,14 @@ body {
     background-color: var(--button-inside);
     border: 4px solid var(--font-shadow-color);
     border-radius: 20px;
-    font-size: 30px;
+    font-size: 20px;
     color: var(--font-color);
     cursor: pointer;
     box-shadow: 15px 16px 15px -3px rgba(0, 0, 0, 0.1), inset 18px 18px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .btn:hover {
-    background-color: var(--button-inside-hover);
+    background-color: var(--modal-outside);
 }
 
 .btn:active {

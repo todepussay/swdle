@@ -1,0 +1,47 @@
+.Proposition {
+    z-index: 100;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--yellow-dark);
+    width: 120%;
+    padding: 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-left: -10%;
+    border: 6px solid var(--font-shadow-color);
+    max-height: 700px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.Proposition .statusRender {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+    font-size: 30px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    -webkit-text-stroke-width: 1px;
+    background: linear-gradient(180deg, var(--font-color-top) 20%, var(--font-color-bottom) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-color: var(--font-shadow-color);
+}
+    
+hr {
+    width: 100%;
+    border: 1px solid var(--font-shadow-color);
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px){
+    .Proposition {
+        width: 100%;
+        margin-left: 0;
+    }
+}

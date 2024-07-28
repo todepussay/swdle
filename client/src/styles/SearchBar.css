@@ -1,0 +1,51 @@
+.SearchBar {
+    background-color: var(--input-background);
+    padding: 5px 10px;
+    border-radius: 8px;
+    margin: 10px;
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+}
+
+.SearchBar input {
+    background-color: transparent;
+    border: none;
+    font-size: 35px;
+    outline: none;
+    width: 100%;
+}
+
+.SearchBar:focus-within {
+    box-shadow: inset 0px 0px 23px 10px rgba(0,0,0,0.1), 0px 0px 23px 10px rgba(0,0,0,0.1);
+}
+
+.SearchBar .btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    .SearchBar {
+        width: 95%;
+        padding: 2px 8px;
+    }
+
+    .SearchBar input {
+        font-size: 20px;
+    }
+
+    .SearchBar .btns {
+        gap: 5px;
+    }
+
+    .SearchBar .btns button {
+        font-size: 18px;
+        padding: 10px;
+    }
+}

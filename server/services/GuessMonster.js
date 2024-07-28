@@ -58,6 +58,108 @@ const guessMonster = async (req, res) => {
                         }
                     }
 
+                    const { buffs, countBuff } = await new Promise((resolve, reject) => {
+                        db.query(
+                            `
+                            SELECT b.id, b.name, b.image_filename
+                            FROM monster_buff mb
+                            INNER JOIN buff b ON mb.buff_id = b.id
+                            WHERE mb.monster_id = ?
+                            `,
+                            [monster.id],
+                            (err, result) => {
+                                if(err){
+                                    console.log(err);
+                                    resolve([]);
+                                } else {
+                                    
+                                    let buffs = [];
+                                    let count = dailyPick.buffs.length;
+
+                                    result.forEach(async buff => {
+                                        if(dailyPick.buffs.includes(buff.id)){
+                                            count--;
+                                        }
+                                        buffs.push({
+                                            id: buff.id,
+                                            name: buff.name,
+                                            image: await getImage(buff.image_filename, "buffs")
+                                        });
+                                    });
+
+                                    resolve({
+                                        buffs: buffs,
+                                        countBuff: count
+                                    });
+                                }
+                            }
+                        )
+                    });
+
+                    const { debuffs, countDebuff } = await new Promise((resolve, reject) => {
+                        db.query(
+                            `
+                            SELECT d.id, d.name, d.image_filename
+                            FROM monster_debuff md
+                            INNER JOIN debuff d ON md.debuff_id = d.id
+                            WHERE md.monster_id = ?
+                            `,
+                            [monster.id],
+                            (err, result) => {
+                                if(err){
+                                    console.log(err);
+                                    resolve([]);
+                                } else {
+
+                                    let debuffs = [];
+                                    let count = dailyPick.debuffs.length;
+
+                                    result.forEach(async debuff => {
+                                        if(dailyPick.debuffs.includes(debuff.id)){
+                                            count--;
+                                        }
+                                        debuffs.push({
+                                            id: debuff.id,
+                                            name: debuff.name,
+                                            image: await getImage(debuff.image_filename, "debuffs")
+                                        });
+                                    });
+
+                                    resolve({
+                                        debuffs: debuffs,
+                                        countDebuff: count
+                                    });
+                                }
+                            }
+                        )
+                    });
+
+                    obj.information.buffs = buffs;
+
+                    obj.information.debuffs = debuffs;
+
+                    if(countBuff === 0){
+                        obj.information.buffs_good = true;
+                        obj.information.buffs_partiel = false;
+                    } else if(countBuff > 0 && countBuff < dailyPick.buffs.length){
+                        obj.information.buffs_good = false;
+                        obj.information.buffs_partiel = true;
+                    } else {
+                        obj.information.buffs_good = false;
+                        obj.information.buffs_partiel = false;
+                    }
+
+                    if(countDebuff === 0){
+                        obj.information.debuffs_good = true;
+                        obj.information.debuffs_partiel = false;
+                    } else if(countDebuff > 0 && countDebuff < dailyPick.debuffs.length){
+                        obj.information.debuffs_good = false;
+                        obj.information.debuffs_partiel = true;
+                    } else {
+                        obj.information.debuffs_good = false;
+                        obj.information.debuffs_partiel = false;
+                    }
+
                     const image = await getImage(monster.image_filename, "monsters");
 
                     obj.information.image_monster = image;

@@ -1,0 +1,108 @@
+.TableClassic {
+    width: 90%;
+    margin-top: 20px;
+    border-spacing: 0;
+    overflow: auto;
+    margin: 20px auto;
+}
+
+.TableClassic th {
+    background-color: var(--font-shadow-color);
+    color: var(--font-color);
+    padding: 10px;
+    text-align: center;
+    border: 1px solid var(--font-shadow-color);
+}
+
+.TableClassic td {
+    background-color: var(--button-inside);
+    color: var(--font-color);
+    border: 1px solid var(--font-shadow-color);
+    padding: 10px;
+    text-align: center;
+    width: 100px;
+    height: 100px;
+    font-size: 20px;
+}
+
+.TableClassic td.bad {
+    background-color: var(--bad);
+}
+
+.TableClassic td.good {
+    background-color: var(--good);
+}
+
+.TableClassic td.particiel {
+    background-color: var(--particiel);
+}
+
+/* table {
+    margin-top: 20px;
+    border-spacing: 0;
+    overflow: auto;
+    width: 90%;
+}
+
+th {
+    background-color: var(--font-shadow-color);
+    color: var(--font-color);
+    padding: 10px;
+    text-align: center;
+    border: 1px solid var(--font-shadow-color);
+}
+
+td {
+    background-color: var(--button-inside);
+    color: var(--font-color);
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    border: 1px solid var(--font-shadow-color);
+}
+
+.monster-name-hover {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.monster-name-hover:hover span {
+    display: block;
+}
+
+.monster-name-hover:hover img {
+    opacity: 0.5;
+    filter: blur(2px);
+}
+
+.monster-name-hover span {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+}
+
+.monster-name-hover img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+td span {
+    font-size: 30px;
+}
+
+.family-td span {
+    font-size: 20px;
+}
+
+.bad {
+    background-color: var(--bad);
+}
+
+.good {
+    background-color: var(--good);
+} */
