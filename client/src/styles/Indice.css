@@ -1,0 +1,98 @@
+.Indice {
+    background: radial-gradient(circle, var(--yellow-light) 70%, var(--yellow-dark) 100%);
+    width: 160px;
+    height: 160px;
+    padding: 10px 5px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.Indice .lock {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Indice .unlock p,
+.Indice .lock p {
+    width: 100%;
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    -webkit-text-stroke-width: 1.5px;
+    background: linear-gradient(180deg, var(--font-color-top) 20%, var(--font-color-bottom) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-color: var(--font-shadow-color);
+    text-decoration: none;
+}
+
+.Indice .lock span {
+    width: 100%;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    -webkit-text-stroke-width: 1.2px;
+    background: linear-gradient(180deg, var(--font-color-top) 20%, var(--font-color-bottom) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-color: var(--font-shadow-color);
+    text-decoration: none;
+}
+
+.Indice .lock svg {
+    font-size: 80px;
+    display: flex;
+    color: var(--bad);
+}
+
+.Indice .unlock .revealZone {
+    margin: auto;
+    width: 100px;
+    height: 100px;
+    /* background: rgb(48,37,30);
+    background: linear-gradient(138deg, rgba(48,37,30,1) 37%, rgba(89,74,64,1) 100%); */
+    background: var(--modal-center);
+    background: radial-gradient(circle, var(--modal-center) 60%, var(--modal-outside) 100%);
+    border-radius: 5px;
+}
+
+.Indice .unlock .revealZone .notSelected {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.Indice .unlock .revealZone .notSelected button {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-size: 40px;
+    color: var(--font-color-top);
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border-radius: 5px;
+}
+
+.Indice .unlock .revealZone:hover {
+    /* background: rgb(48,37,30);
+    background: linear-gradient(138deg, rgba(48,37,30,1) 20%, rgba(89,74,64,1) 100%); */
+    background: var(--modal-center);
+    background: radial-gradient(circle, var(--modal-center) 50%, var(--modal-outside) 100%);
+}
+
+.Indice .unlock .revealZone .selected button {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+}

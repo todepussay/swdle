@@ -106,7 +106,6 @@ function SearchBar({
     }, [propositionFamilies, propositionMonster]);
 
     return (
-        console.log(status),
         <div className="SearchBar">
             <Tooltip
                 id="buttonChangeSearchMode"

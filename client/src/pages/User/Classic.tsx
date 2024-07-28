@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import Family from '@models/Family';
-import Monster from '@models/Monster';
+import MonsterType from '@models/Monster';
 import GuessMonster from '@models/GuessMonster';
 import Indice from '@models/Indice';
 import '@styles/Classic.css';
@@ -24,6 +24,7 @@ import Indices from "@components/Indices";
 import useDebounce from '@services/useDebounce';
 import SearchBar from '@components/SearchBar';
 import TableClassic from '@components/TableClassic';
+import Monster from '@components/Monster';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -65,7 +66,6 @@ function Classic({ width }: ClassicProps){
             number_try: triesMonster.length + 1
         })
         .then((res) => {
-            console.log(res.data);
             setTriesMonster([...triesMonster, res.data]);
             setRefresh(!refresh);
 
@@ -101,7 +101,7 @@ function Classic({ width }: ClassicProps){
         })
     }
 
-    useEffect(() => {
+    async function getMonsterData(){
         if(!Cookies.get("classic")){
             Cookies.set("classic", JSON.stringify({
                 date: new Date(),
@@ -115,39 +115,43 @@ function Classic({ width }: ClassicProps){
             let resultat = [];
             
             for(let i = 0; i < triesJSON.length; i++){
-                axios.post(`${apiUrl}/guessMonster`, {
+                const res = await axios.post(`${apiUrl}/guessMonster`, {
                     monster_id: triesJSON[i],
                     number_try: i + 1
-                })
-                .then((res) => {
-                    resultat.push(res.data);
-                    if(i === triesJSON.length - 1){
-                        setTriesMonster(resultat);
-                        
-                        const lastIndices = resultat[resultat.length - 1].indices;
+                });
 
-                        setIndices(prev => 
-                            prev.map((indice: Indice, index: number) => 
-                                resultat.length >= indice.unlock && index === lastIndices[index].id ? {
+                resultat.push(res.data);
+                if(i === triesJSON.length - 1){
+                    setTriesMonster(resultat);
+                    
+                    const lastIndices = resultat[resultat.length - 1].indices;
+
+                    setIndices(prev => 
+                        prev.map((indice: Indice, index: number) => {
+                            const shouldUpdate = resultat[resultat.length - 1].try >= indice.unlock && index === lastIndices[index].id;
+                            console.log(shouldUpdate);
+                            
+                            if (shouldUpdate) {
+                                // Create a new object with updated `img` property if the condition is met
+                                return {
                                     ...indice,
                                     img: lastIndices[index].img
-                                } : indice
-                            )
-                        );
-
-                        if(resultat[resultat.length - 1].correct){
-                            setCorrect(resultat[resultat.length - 1]);
-                            setTimeout(() => {
-                                correct_ref.current?.scrollIntoView({ behavior: "smooth" });
-                            }, 500);
-                        }
+                                };
+                            } else {
+                                // Return the original object if the condition is not met
+                                return indice;
+                            }
+                        })
+                    );
+                    
+    
+                    if(resultat[resultat.length - 1].correct){
+                        setCorrect(resultat[resultat.length - 1]);
+                        setTimeout(() => {
+                            correct_ref.current?.scrollIntoView({ behavior: "smooth" });
+                        }, 500);
                     }
-                })
-            }
-
-            const savedIndices = savedClassic.indices;
-            if(savedIndices){
-                setIndices(savedIndices);
+                }
             }
         }
 
@@ -155,6 +159,10 @@ function Classic({ width }: ClassicProps){
         if(savedSearchMode){
             // setSearchMode(savedSearchMode);
         }
+    }
+
+    useEffect(() => {
+        getMonsterData();
     }, []);
 
     // useEffect(() => {
@@ -182,7 +190,17 @@ function Classic({ width }: ClassicProps){
     return (
         <div className="Classic">
 
-            {/* <Indices tries={triesMonster.length} indices={indices} /> */}
+            <Indices tryNumber={triesMonster.length} correct={correct !== undefined ? true : false} indices={indices} />
+
+            {
+                triesMonster.length === 0 && (
+                    <div className="explications">
+                        <p>Devine le monstre de <br /> Summoners War du jour !</p>
+                        <span>Tu peux choisir entre chercher par famille de monstre, ou directement par monstre.</span> 
+                        <span>Bonne chance !</span>
+                    </div>
+                )
+            }
 
             {/* {
                 triesMonster.length > 0 ? (
@@ -244,11 +262,7 @@ function Classic({ width }: ClassicProps){
                         }
                     </div>
                 ) : (
-                    <div className="explications">
-                        <p>Devine le monstre de <br /> Summoners War du jour !</p>
-                        <span>Tu peux choisir entre chercher par famille de monstre, ou directement par monstre.</span> 
-                        <span>Bonne chance !</span>
-                    </div>
+                    
                 )
             } */}
 
@@ -371,11 +385,22 @@ function Classic({ width }: ClassicProps){
                             }
                         </p>
                         <div className="resultat">
-                            <img src={new URL(`../assets/monsters/${correct?.information.image_monster}`, import.meta.url).href} alt="Monster" />
-                            <span>
-                                {correct?.information.family_monster_name} <br />
-                                {correct?.information.name_monster}
-                            </span>
+                            <Monster 
+                                monster={{
+                                    monster_id: correct.information.id_monster,
+                                    monster_name: correct.information.name_monster,
+                                    monster_image: correct.information.image_monster,
+                                    monster_element: correct.information.element_monster
+                                }}
+                            />
+                            <div className="spans">
+                                <span>
+                                    {correct?.information.family_monster_name} 
+                                </span>
+                                <span>
+                                    {correct?.information.name_monster}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 )

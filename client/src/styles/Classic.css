@@ -9,13 +9,13 @@
 
 .explications {
     background-color: var(--yellow-dark);
-    margin-top: 20px;
     border-radius: 20px;
     width: 70%;
     padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-bottom: 20px;
 }
 
 .explications p {
@@ -44,59 +44,6 @@
     -webkit-text-stroke-color: var(--font-shadow-color);
     text-decoration: none;
     text-align: center;
-}
-
-.indices {
-    background-color: var(--yellow-dark);
-    margin-top: 20px;
-    border-radius: 20px;
-    width: 70%;
-}
-
-.list-indices {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    padding: 10px;
-}
-
-.indice {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    min-width: 50%;
-}
-
-.indice img {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-    cursor: pointer;
-}
-
-.indice span {
-    text-align: center;
-    font-size: 25px;
-    font-weight: 900;
-    letter-spacing: -1px;
-    -webkit-text-stroke-width: 1.5px;
-    background: linear-gradient(180deg, var(--font-color-top) 20%, var(--font-color-bottom) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    -webkit-text-stroke-color: var(--font-shadow-color);
-}
-
-.indice-content {
-    background-color: var(--yellow-light);
-    width: 70%;
-    margin: 20px auto;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
 }
 
 .correct {
@@ -135,10 +82,11 @@
     gap: 20px;
 }
 
-.correct .resultat img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
+.correct .resultat .spans {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
 .correct .resultat span {

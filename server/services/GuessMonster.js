@@ -67,7 +67,7 @@ const guessMonster = async (req, res) => {
                             WHERE mb.monster_id = ?
                             `,
                             [monster.id],
-                            (err, result) => {
+                            async (err, result) => {
                                 if(err){
                                     console.log(err);
                                     resolve([]);
@@ -76,7 +76,7 @@ const guessMonster = async (req, res) => {
                                     let buffs = [];
                                     let count = dailyPick.buffs.length;
 
-                                    result.forEach(async buff => {
+                                    for(let buff of result){
                                         if(dailyPick.buffs.includes(buff.id)){
                                             count--;
                                         }
@@ -85,7 +85,7 @@ const guessMonster = async (req, res) => {
                                             name: buff.name,
                                             image: await getImage(buff.image_filename, "buffs")
                                         });
-                                    });
+                                    }
 
                                     resolve({
                                         buffs: buffs,
@@ -105,7 +105,7 @@ const guessMonster = async (req, res) => {
                             WHERE md.monster_id = ?
                             `,
                             [monster.id],
-                            (err, result) => {
+                            async (err, result) => {
                                 if(err){
                                     console.log(err);
                                     resolve([]);
@@ -114,7 +114,7 @@ const guessMonster = async (req, res) => {
                                     let debuffs = [];
                                     let count = dailyPick.debuffs.length;
 
-                                    result.forEach(async debuff => {
+                                    for(let debuff of result){
                                         if(dailyPick.debuffs.includes(debuff.id)){
                                             count--;
                                         }
@@ -123,7 +123,7 @@ const guessMonster = async (req, res) => {
                                             name: debuff.name,
                                             image: await getImage(debuff.image_filename, "debuffs")
                                         });
-                                    });
+                                    }
 
                                     resolve({
                                         debuffs: debuffs,
@@ -138,7 +138,7 @@ const guessMonster = async (req, res) => {
 
                     obj.information.debuffs = debuffs;
 
-                    if(countBuff === 0){
+                    if(countBuff === 0 && dailyPick.buffs.length === buffs.length){
                         obj.information.buffs_good = true;
                         obj.information.buffs_partiel = false;
                     } else if(countBuff > 0 && countBuff < dailyPick.buffs.length){
@@ -149,10 +149,10 @@ const guessMonster = async (req, res) => {
                         obj.information.buffs_partiel = false;
                     }
 
-                    if(countDebuff === 0){
+                    if(countDebuff === 0 && dailyPick.debuffs.length === debuffs.length){
                         obj.information.debuffs_good = true;
                         obj.information.debuffs_partiel = false;
-                    } else if(countDebuff > 0 && countDebuff < dailyPick.debuffs.length){
+                    } else if(countDebuff !== dailyPick.debuffs.length){
                         obj.information.debuffs_good = false;
                         obj.information.debuffs_partiel = true;
                     } else {
