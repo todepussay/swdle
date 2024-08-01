@@ -1,5 +1,5 @@
 const { db } = require('../services/db');
-const { addImage, deleteImage } = require('../services/Image');
+const { addImage, deleteImage } = require('./Image');
 
 async function addDebuff({ name, image }){
     return new Promise(async (resolve, reject) => {

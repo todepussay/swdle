@@ -1,6 +1,6 @@
 const { db } = require('./db');
 const { getSkillByMonsterId } = require('./Skill');
-const { getImage } = require('./Image');
+const { getImage } = require('../Entity/Image');
 const { getBuffByMonsterId } = require('./Buff');
 const { getDebuffByMonsterId } = require('./Debuff');
 const { addMonster, deleteMonster, updateMonster } = require('../Entity/Monster');

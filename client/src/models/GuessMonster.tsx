@@ -9,7 +9,7 @@ export default interface GuessMonster {
     information: {
         id_monster: number;
         name_monster: string;
-        image_monster: string;
+        image_monster_path: string;
         natural_stars_monster: number;
         natural_stars_good: boolean;
         natural_stars_more: boolean;

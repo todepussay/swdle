@@ -1,5 +1,5 @@
 const { db } = require('../services/db');
-const { addImage, deleteImage } = require('../services/Image');
+const { addImage, deleteImage } = require('./Image');
 const { deleteSkill } = require('../Entity/Skill');
 
 async function addMonster({

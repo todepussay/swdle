@@ -1,7 +1,7 @@
 const { db } = require('./db');
 const { getDailyPick } = require('./DailyPick');
 const Jimp = require('jimp');
-const { getImage } = require('./Image');
+const { getImage } = require('../Entity/Image');
 
 const guessMonster = async (req, res) => {
 
@@ -83,7 +83,7 @@ const guessMonster = async (req, res) => {
                                         buffs.push({
                                             id: buff.id,
                                             name: buff.name,
-                                            image: await getImage(buff.image_filename, "buffs")
+                                            image_path: buff.image_filename
                                         });
                                     }
 
@@ -121,7 +121,7 @@ const guessMonster = async (req, res) => {
                                         debuffs.push({
                                             id: debuff.id,
                                             name: debuff.name,
-                                            image: await getImage(debuff.image_filename, "debuffs")
+                                            image_path: debuff.image_filename
                                         });
                                     }
 
@@ -160,9 +160,9 @@ const guessMonster = async (req, res) => {
                         obj.information.debuffs_partiel = false;
                     }
 
-                    const image = await getImage(monster.image_filename, "monsters");
+                    const image_path = monster.image_filename;
 
-                    obj.information.image_monster = image;
+                    obj.information.image_monster_path = image_path;
 
                     const indices = await generateIndices(dailyPick, number_try);
 

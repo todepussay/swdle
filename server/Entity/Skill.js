@@ -1,8 +1,10 @@
 const { db } = require('../services/db');
-const { addImage, deleteImage } = require('../services/Image');
+const { addImage, deleteImage } = require('./Image');
 
-async function addSkill({ name, monsterId, slot, passive, pathImage }){
-    return new Promise((resolve, reject) => {
+async function addSkill({ name, monsterId, slot, passive, image }){
+    return new Promise(async (resolve, reject) => {
+        const pathImage = await addImage(image, 'skills');
+
         if(!pathImage){
             return reject({
                 success: false,
@@ -61,24 +63,44 @@ async function deleteSkill(id){
             [id],
             (err, result) => {
                 if(err) throw err;
-                
+
                 db.query(
                     `
-                    DELETE FROM skill WHERE id = ?
+                    SELECT icon_filename FROM skill WHERE id = ?
                     `,
                     [id],
                     (err, result) => {
-                        if(err){
+                        if(err) throw err;
+
+                        let status = deleteImage(result[0].icon_filename, 'skills');
+
+                        if(!status){
                             return reject({
                                 success: false,
-                                message: 'Erreur lors de la suppression de la compétence'
+                                cause: 'image_not_deleted',
+                                message: 'L\'image n\'a pas pu être supprimée'
                             });
-                        } 
-                        
-                        return resolve({
-                            success: true,
-                            message: 'Compétence supprimée'
-                        });
+                        }
+
+                        db.query(
+                            `
+                            DELETE FROM skill WHERE id = ?
+                            `,
+                            [id],
+                            (err, result) => {
+                                if(err){
+                                    return reject({
+                                        success: false,
+                                        message: 'Erreur lors de la suppression de la compétence'
+                                    });
+                                } 
+                                
+                                return resolve({
+                                    success: true,
+                                    message: 'Compétence supprimée'
+                                });
+                            }
+                        )
                     }
                 )
             }

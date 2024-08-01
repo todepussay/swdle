@@ -154,38 +154,11 @@ function Classic({ width }: ClassicProps){
                 }
             }
         }
-
-        const savedSearchMode = Cookies.get("searchMode");
-        if(savedSearchMode){
-            // setSearchMode(savedSearchMode);
-        }
     }
 
     useEffect(() => {
         getMonsterData();
     }, []);
-
-    // useEffect(() => {
-        
-    //     if(search === ""){
-    //         setPropositionFamilies([]);
-    //         setPropositionMonster([]);
-    //     } else {
-    //         axios.get(`${apiUrl}/search`, {
-    //             params: {
-    //                 search: debouncedValue,
-    //                 searchMode: searchMode
-    //             }
-    //         }).then((res) => {
-    //             if(searchMode === "families"){
-    //                 setPropositionFamilies(res.data.families);
-    //             } else {
-    //                 setPropositionMonster(res.data.monsters);
-    //             }
-    //         })
-    //     }
-
-    // }, [debouncedValue]);
 
     return (
         <div className="Classic">
@@ -202,70 +175,6 @@ function Classic({ width }: ClassicProps){
                 )
             }
 
-            {/* {
-                triesMonster.length > 0 ? (
-                    <div className="indices">
-                        <div className="list-indices">
-                            <div className="indice" id='indice1'>
-                                <img src={triesMonster.length >= 6 ? monster : indice_img} alt="Indice" onClick={
-                                    () => {
-                                        if(triesMonster.length >= 6){
-                                            setIndiceSelected(indiceSelected === "indice1" ? "" : "indice1");
-                                        }
-                                    }
-                                } />
-                                <span>
-                                    {
-                                        triesMonster.length >= 6 ? (
-                                            ""
-                                        ) : (
-                                            `Débloqué dans ${6 - triesMonster.length} essais`
-                                        )
-                                    }
-                                </span>
-                            </div>
-                            <div className="indice" id='indice2'>
-                                <img src={triesMonster.length >= 12 ? monster : indice_img} alt="Indice" onClick={
-                                    () => {
-                                        if(triesMonster.length >= 12){
-                                            setIndiceSelected(indiceSelected === "indice2" ? "" : "indice2");
-                                        }
-                                    }
-                                } />
-                                <span>
-                                    {
-                                        triesMonster.length >= 12 ? (
-                                            ""
-                                        ) : (
-                                            `Débloqué dans ${12 - triesMonster.length} essais`
-                                        )
-                                    }
-                                </span>
-                            </div>
-                        </div>
-                                
-
-                        {
-                            indiceSelected && (
-                                <div className="indice-content">
-                                    {
-                                        indiceSelected === "indice1" ? (
-                                            <img src={new URL(`../assets/skills/${indice.indice1}`, import.meta.url).href} alt="Indice1" />
-                                        ) : indiceSelected === "indice2" ? (
-                                            <img src={indice.indice2} alt="Indice2" />
-                                        ) : (
-                                            ""
-                                        )
-                                    }
-                                </div>
-                            )
-                        }
-                    </div>
-                ) : (
-                    
-                )
-            } */}
-
             <SearchBar 
                 correct={correct}
                 input={input}
@@ -273,99 +182,6 @@ function Classic({ width }: ClassicProps){
                 triesMonster={triesMonster}
                 refresh={refresh}
             />
-
-            {/* <div className="search-zone">
-                <input 
-                    type="text"
-                    placeholder={
-                        correct ? "Bravo ! Vous avez trouvé le monstre !" :
-                        searchMode === "families" ? "Rechercher par famille de monstre" : "Rechercher par nom du monstre"
-                    }
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    ref={input}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter" && propositionMonster.length > 0 && searchMode === "monsters") {
-                            handleSubmitProposition(propositionMonster[0].monster_id);
-                        }
-                    }}
-                    { ...correct && {
-                        disabled: true
-                    } }
-                />
-                
-                <button
-                    className='btn'
-                    onClick={handleChangeSearchMode}
-                >
-                    {
-                        searchMode === "families" ? "Famille" : "Monstre"
-                    }
-                </button>
-
-                {
-                     ((propositionFamilies.length > 0) || (propositionMonster.length > 0)) && (
-                        <div className={`proposition ${searchMode === "monsters" ? "propostion-monster" : ""}`}>
-                            {
-                                searchMode === "families" ? (
-                                    propositionFamilies.map((family, index) => {
-                                        if(family.monsters.length === 0) return null;
-                                        return (
-                                            <React.Fragment key={index}>
-                                                {
-                                                    index > 0 && propositionFamilies[index - 1].family_name !== family.family_name && (
-                                                        <hr />
-                                                    )
-                                                }
-                                                <div className="family" key={index}>
-                                                    <p className="family-name">
-                                                        {family.family_name}
-                                                    </p>
-                                                    <div className="monsters">
-                                                        {
-                                                            family.monsters
-                                                            .map((monster, index) => {
-                                                                return (
-                                                                    <div className="monster" key={index} onClick={() => handleSubmitProposition(monster.monster_id)}>
-                                                                        <p className='monster-name'>
-                                                                            {monster.monster_name}
-                                                                        </p>
-                                                                        <img src={monster.monster_image} alt="Monster" />
-                                                                    </div>
-                                                                )
-                                                            })
-                                                        }
-                                                    </div>
-                                                </div>
-                                            </React.Fragment>
-                                        )
-                                    })
-                                ) : (
-                                    propositionMonster
-                                    .sort((a, b) => {
-                                        return a.monster_name.localeCompare(b.monster_name);
-                                    })
-                                    .filter((monster) => {
-                                        return !triesMonster.some((tryMonster) => {
-                                            return tryMonster.information.name_monster === monster.monster_name;
-                                        });
-                                    })
-                                    .map((monster, index) => {
-                                        return (
-                                            <div className="monster" key={index} onClick={() => handleSubmitProposition(monster.monster_id)}>
-                                                <p className='monster-name'>
-                                                    {monster.monster_name}
-                                                </p>
-                                                <img src={monster.monster_image} alt="Monster" />
-                                            </div>
-                                        )
-                                    })
-                                )
-                            }
-                        </div>
-                    )
-                }
-            </div> */}
 
             {
                 triesMonster.length > 0 && (
@@ -389,7 +205,7 @@ function Classic({ width }: ClassicProps){
                                 monster={{
                                     monster_id: correct.information.id_monster,
                                     monster_name: correct.information.name_monster,
-                                    monster_image: correct.information.image_monster,
+                                    monster_image_path: correct.information.image_monster_path,
                                     monster_element: correct.information.element_monster
                                 }}
                             />

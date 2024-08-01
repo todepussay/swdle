@@ -55,7 +55,7 @@ function TableClassic({ triesMonster }: TableClassicProps) {
                                         {
                                             monster_id: element.information.id_monster + index,
                                             monster_name: element.information.name_monster,
-                                            monster_image: element.information.image_monster
+                                            monster_image_path: element.information.image_monster_path
                                         }
                                     } />
                                 </td>

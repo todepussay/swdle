@@ -11,6 +11,7 @@ const { getDebuffs, getDebuff, addDebuffService, deleteDebuffService, updateDebu
 const { affecter, desaffecter } = require("./services/Affectation");
 const { UserHasPermissionAdmin } = require('./services/User');
 const { search } = require('./services/Search');
+const { getImageService } = require('./services/Image');
 
 // router.get("/getAllMonsters", getAllMonsters);
 
@@ -20,6 +21,9 @@ router.get("/verifyDaily", verifyDaily);
 
 // Search Router :
 router.get("/search", search);
+
+// Image Router :
+router.get("/image/:folder/:filename", getImageService);
 
 // Auth Router :
 router.post("/auth/login", login);

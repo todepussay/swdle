@@ -1,5 +1,4 @@
 const { db } = require('./db');
-const { getImage } = require('./Image');
 
 async function getMonstersForSearch(search){
     return new Promise((resolve, reject) => {
@@ -27,7 +26,7 @@ async function getMonstersForSearch(search){
                         monsters.push({
                             monster_id: result[i].id,
                             monster_name: result[i].name,
-                            monster_image: await getImage(result[i].image_filename, "monsters")
+                            monster_image_path: result[i].image_filename
                         });
                     }
 
@@ -76,7 +75,7 @@ async function getFamiliesForSearch(search){
                             family.monsters.push({
                                 monster_id: result[i].monster_id,
                                 monster_name: result[i].monster_name,
-                                monster_image: await getImage(result[i].monster_image, "monsters"),
+                                monster_image_path: result[i].monster_image,
                                 monster_element: result[i].monster_element
                             });
                         } else {
@@ -86,7 +85,7 @@ async function getFamiliesForSearch(search){
                                 monsters: [{
                                     monster_id: result[i].monster_id,
                                     monster_name: result[i].monster_name,
-                                    monster_image: await getImage(result[i].monster_image, "monsters"),
+                                    monster_image_path: result[i].monster_image,
                                     monster_element: result[i].monster_element
                                 }]
                             });

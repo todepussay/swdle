@@ -1,5 +1,5 @@
 const { db } = require('./db');
-const { getImage } = require('./Image');
+const { getImage } = require('../Entity/Image');
 const { addDebuff, deleteDebuff, updateDebuff } = require('../Entity/Debuff');
 const PaginationLimit = parseInt(process.env.PAGINATION_LIMIT);
 

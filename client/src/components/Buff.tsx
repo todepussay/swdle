@@ -2,6 +2,7 @@ import React from "react";
 import "@styles/Buff.css";
 import Buff from "@models/Buff";
 import { Tooltip } from "react-tooltip";
+import Image from "@components/Image";
 
 interface BuffProps {
     buff: Buff;
@@ -10,11 +11,12 @@ interface BuffProps {
 function BuffComponent({ buff }: BuffProps) {
     return (
         <div className="Buff">
-            <img
-                data-tooltip-id="tooltip-buff"
-                data-tooltip-content={buff.name} 
-                src={buff.image} 
-                alt="Buff Img" 
+            <Image 
+                path={buff.image_path} 
+                folder="buffs" 
+                alt={`Buff image ${buff.id}`} 
+                data_tooltip_id="tooltip-buff" 
+                data_tooltip_content={buff.name}
             />
             <Tooltip
                 id="tooltip-buff"

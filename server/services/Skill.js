@@ -1,8 +1,7 @@
 const { db } = require('./db');
 const Jimp = require('jimp');
-const { getImage, addImage, deleteImage } = require('./Image');
+const { getImage, addImage } = require('../Entity/Image');
 const { addSkill, deleteSkill, updateSkill } = require('../Entity/Skill');
-const { UserHasPermissionAdmin } = require('./User');
 const PaginationLimit = parseInt(process.env.PAGINATION_LIMIT);
 
 async function getSkillByMonsterId(monsterId) {
@@ -148,9 +147,8 @@ function getSkill(req, res){
 async function addSkillService(req, res){
     try {
         const { name, monsterId, slot, passive, image } = req.body;
-        const pathImage = await addImage(image, 'skills');
 
-        const result = await addSkill({ name, monsterId, slot, passive, pathImage });
+        const result = await addSkill({ name, monsterId, slot, passive, image });
 
         res.json(result);
     } catch(err){
