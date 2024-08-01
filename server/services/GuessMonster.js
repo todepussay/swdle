@@ -5,7 +5,7 @@ const { getImage } = require('../Entity/Image');
 
 const guessMonster = async (req, res) => {
 
-    const { monster_id, number_try } = req.body;
+    const { monster_id, number_try, auto } = req.body;
     const dailyPick = getDailyPick().daily_monster;
 
     db.query(
@@ -57,6 +57,28 @@ const guessMonster = async (req, res) => {
                             image_monster: null
                         }
                     }
+
+                    let win = 0;
+
+                    if(monster.id === dailyPick.id && !auto){
+                        win = await new Promise((resolve, reject) => {
+                            db.query(
+                                `
+                                CALL add_win_monster_daily_pick()
+                                `,
+                                (err, result) => {
+                                    if(err){
+                                        console.log(err);
+                                        resolve(false);
+                                    } else {
+                                        resolve(result[0][0].updated_monster_daily_pick_win);
+                                    }
+                                }
+                            )
+                        })
+                    }
+
+                    obj.win_number = win;
 
                     const { buffs, countBuff } = await new Promise((resolve, reject) => {
                         db.query(

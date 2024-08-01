@@ -117,7 +117,8 @@ function Classic({ width }: ClassicProps){
             for(let i = 0; i < triesJSON.length; i++){
                 const res = await axios.post(`${apiUrl}/guessMonster`, {
                     monster_id: triesJSON[i],
-                    number_try: i + 1
+                    number_try: i + 1,
+                    auto: true
                 });
 
                 resultat.push(res.data);
@@ -218,6 +219,13 @@ function Classic({ width }: ClassicProps){
                                 </span>
                             </div>
                         </div>
+                        {
+                            correct.win_number !== 0 && (
+                                <p>
+                                    Vous êtes le {correct?.win_number} ème à trouver ce monstre !
+                                </p>
+                            )
+                        }
                     </div>
                 )
             }

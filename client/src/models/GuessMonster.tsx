@@ -6,6 +6,7 @@ export default interface GuessMonster {
     date: Date;
     indice: {};
     try: number;
+    win_number?: number;
     information: {
         id_monster: number;
         name_monster: string;
