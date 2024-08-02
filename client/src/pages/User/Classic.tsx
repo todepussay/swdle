@@ -220,7 +220,6 @@ function Classic({ width }: ClassicProps){
                                 </span>
                             </div>
                         </div>
-                        <br />
                         {
                             correct.win_number !== 0 && (
                                 <p>
