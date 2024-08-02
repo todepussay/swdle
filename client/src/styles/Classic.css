@@ -121,30 +121,18 @@
 
 @media (max-width: 430px) {
 
-    table {
+    .explications {
+        width: 90%;
+    }
+
+    .explications p {
+        font-size: 20px;
+        -webkit-text-stroke-width: 1px;
+    }
+
+    .explications span {
         font-size: 15px;
-        overflow: scroll;
-    }
-
-    table tr td img {
-        width: 30px;
-        height: 30px;
-    }
-
-    table tr td span img {
-        width: 25px;
-        height: 25px;
-    }
-
-    td span, .family-td span, th {
-        font-size: 8px;
-    }
-
-    .monster-name-hover img {
-    }
-
-    tr {
-        max-height: 20px;
+        letter-spacing: normal;
     }
 
     .correct {

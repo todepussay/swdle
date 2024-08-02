@@ -187,6 +187,7 @@ function Classic({ width }: ClassicProps){
             {
                 triesMonster.length > 0 && (
                     <TableClassic 
+                        width={width}
                         triesMonster={triesMonster}
                     />
                 )

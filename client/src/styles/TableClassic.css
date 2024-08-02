@@ -37,72 +37,31 @@
     background-color: var(--particiel);
 }
 
-/* table {
-    margin-top: 20px;
-    border-spacing: 0;
-    overflow: auto;
-    width: 90%;
+@media (max-width: 768px) {
+    .TableClassic {
+        width: 100%;
+    }
+
+    .TableClassic th {
+        font-size: 16px;
+    }
+
+    .TableClassic td {
+        font-size: 16px;
+    }
 }
 
-th {
-    background-color: var(--font-shadow-color);
-    color: var(--font-color);
-    padding: 10px;
-    text-align: center;
-    border: 1px solid var(--font-shadow-color);
-}
+@media (max-width: 430px) {
+    .TableClassic th {
+        font-size: 12px;
+    }
 
-td {
-    background-color: var(--button-inside);
-    color: var(--font-color);
-    width: 100px;
-    height: 100px;
-    text-align: center;
-    border: 1px solid var(--font-shadow-color);
-}
+    .TableClassic td {
+        font-size: 12px;
+    }
 
-.monster-name-hover {
-    position: relative;
-    width: 100px;
-    height: 100px;
+    .TableClassic td img {
+        width: 30px;
+        height: 30px;
+    }
 }
-
-.monster-name-hover:hover span {
-    display: block;
-}
-
-.monster-name-hover:hover img {
-    opacity: 0.5;
-    filter: blur(2px);
-}
-
-.monster-name-hover span {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 20px;
-}
-
-.monster-name-hover img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-td span {
-    font-size: 30px;
-}
-
-.family-td span {
-    font-size: 20px;
-}
-
-.bad {
-    background-color: var(--bad);
-}
-
-.good {
-    background-color: var(--good);
-} */

@@ -20,9 +20,10 @@ import { Tooltip } from "react-tooltip";
 
 interface TableClassicProps {
     triesMonster: GuessMonster[];
+    width: number;
 }
 
-function TableClassic({ triesMonster }: TableClassicProps) {
+function TableClassic({ triesMonster, width }: TableClassicProps) {
     return (
         <table className="TableClassic">
             <thead>
