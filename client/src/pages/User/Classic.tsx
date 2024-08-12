@@ -222,7 +222,7 @@ function Classic({ width }: ClassicProps){
                         {
                             correct.win_number !== 0 && (
                                 <p>
-                                    Vous êtes le {correct?.win_number} ème à trouver ce monstre !
+                                    Vous êtes le {correct?.win_number}{correct?.win_number === 1 ? "er" : "ème"} à trouver ce monstre !
                                 </p>
                             )
                         }
