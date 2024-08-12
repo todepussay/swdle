@@ -76,8 +76,6 @@ function Signin(){
                     email: credentials.email,
                     password: hash
                 }).then((res: { data: any; }) => {
-                    console.log(res.data);
-
                     if(!res.data.success){
                         setError(res.data.message);
                         setStatus("error");

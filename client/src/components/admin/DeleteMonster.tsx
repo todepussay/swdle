@@ -57,7 +57,6 @@ function DeleteMonster({ id, closeModal, updateData }: DeleteMonsterProps){
         }).then(res => {
             if(res.data.success){
                 setData(res.data.data);
-                console.log(res.data.data);
             } else {
                 if(res.data.cause === "unauthorized"){
                     navigate("/login");

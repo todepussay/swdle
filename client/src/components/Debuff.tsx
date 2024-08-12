@@ -10,7 +10,7 @@ interface DebuffProps {
 
 function DebuffComponent({ debuff }: DebuffProps) {
     return (
-        <div className="Debuff">
+        <div className="Debuff" key={debuff.id}>
             <Image 
                 path={debuff.image_path} 
                 folder="debuffs" 

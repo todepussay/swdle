@@ -48,7 +48,6 @@ function TableSkills({ openModalDelete, openModalUpdate, updateData }: TableSkil
             if(res.data.success){
                 setData(res.data.data);
                 setTotalPage(res.data.totalPage);
-                console.log(res.data.data);
             } else {
                 if(res.data.cause === "unauthorized"){
                     navigate("/login");

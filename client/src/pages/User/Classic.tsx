@@ -130,7 +130,6 @@ function Classic({ width }: ClassicProps){
                     setIndices(prev => 
                         prev.map((indice: Indice, index: number) => {
                             const shouldUpdate = resultat[resultat.length - 1].try >= indice.unlock && index === lastIndices[index].id;
-                            console.log(shouldUpdate);
                             
                             if (shouldUpdate) {
                                 // Create a new object with updated `img` property if the condition is met

@@ -21,7 +21,6 @@ function Image({ path, folder, alt, className, data_tooltip_id, data_tooltip_con
     useEffect(() => {
         axios.get(`${apiUrl}/image/${folder}/${path}`)
         .then((res) => {
-            console.log(res.data);
             setImage(res.data.data);
             setLoading(false);
         })

@@ -154,7 +154,6 @@ function UpdateSkill({ id, closeModal, updateData }: AddMonsterProps){
                         label: `${monster.name} - ${monster.skill_count} compétences`
                     }))
                 );
-                console.log(res.data.data);
             } else {
                 if(res.data.cause === "unauthorized"){
                     localStorage.removeItem('token');

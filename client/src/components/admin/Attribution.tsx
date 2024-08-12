@@ -143,7 +143,6 @@ function Attribution({ id, onglet, closeModal, updateData }: AttributionProps){
             });
 
             if(res.data.success){
-                console.log(res.data.data);
                 res.data.data.map((monster: any) => {
                     if(onglet === "buffs"){
                         if(monster.buff_count > 0){

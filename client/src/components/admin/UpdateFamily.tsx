@@ -100,7 +100,6 @@ function UpdateFamily({ id, closeModal, updateData }: UpdateFamilyProps){
     }, [])
 
     return (
-        console.log(familyInformation),
         <form className='AddForm'>
             <div className="row">
                 <p>

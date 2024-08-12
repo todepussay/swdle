@@ -10,7 +10,7 @@ interface BuffProps {
 
 function BuffComponent({ buff }: BuffProps) {
     return (
-        <div className="Buff">
+        <div className="Buff" key={buff.id}>
             <Image 
                 path={buff.image_path} 
                 folder="buffs" 
