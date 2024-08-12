@@ -27,6 +27,7 @@ import TableClassic from '@components/TableClassic';
 import Monster from '@components/Monster';
 
 const apiUrl = import.meta.env.VITE_API_URL;
+const url = import.meta.env.VITE_URL;
 
 type ClassicProps = {
     width: number;
@@ -45,6 +46,12 @@ const initIndices = [
     }
 ];
 
+interface Share {
+    head: string;
+    body: string[];
+    foot: string;
+}
+
 function Classic({ width }: ClassicProps){
 
     const [tries, setTries] = useState<number[]>([]);
@@ -52,9 +59,57 @@ function Classic({ width }: ClassicProps){
     const [indices, setIndices] = useState<Indice[]>(initIndices);
     const [correct, setCorrect] = useState<GuessMonster>();
     const [refresh, setRefresh] = useState<boolean>(false);
+    const [share, setShare] = useState<Share>({
+        head: "J'ai trouvé le monstre #SWdle en 0 coups !",
+        body: [],
+        foot: url
+    });
 
     const input = useRef<HTMLInputElement>(null);
     const correct_ref = useRef<HTMLDivElement>(null);
+
+    const handleCorrect = (correct: GuessMonster, tries: GuessMonster[]) => {
+        setCorrect(correct);
+        setTimeout(() => {
+            correct_ref.current?.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+
+        setShare(prev => ({
+            ...prev,
+            head: `J'ai trouvé le monstre #SWdle en ${triesMonster.length} coups !`
+        }));
+
+        let body = tries.map((tryMonster: GuessMonster) => {
+            return `${tryMonster.try}${
+                tryMonster.correct ? "🟩" : "🟥"
+            }${
+                tryMonster.information.natural_stars_good ? "🟩" : "🟥"
+            }${
+                tryMonster.information.second_awakened_good ? "🟩" : "🟥"
+            }${
+                tryMonster.information.element_good ? "🟩" : "🟥"
+            }${
+                tryMonster.information.archetype_good ? "🟩" : "🟥"
+            }${
+                tryMonster.information.buffs_good ? "🟩" :
+                tryMonster.information.buffs_partiel ? "🟨" : "🟥"
+            }${
+                tryMonster.information.debuffs_good ? "🟩" :
+                tryMonster.information.debuffs_partiel ? "🟨" : "🟥"
+            }${
+                tryMonster.information.family_good ? "🟩" : "🟥"
+            }${
+                tryMonster.information.leader_skill_good ? "🟩" : "🟥"
+            }${
+                tryMonster.information.fusion_food_good ? "🟩" : "🟥"
+            }`;
+        });
+
+        setShare(prev => ({
+            ...prev,
+            body: body
+        }));
+    }
 
     const handleSubmitProposition = (id: number) => {
         if(width > 430){
@@ -69,8 +124,8 @@ function Classic({ width }: ClassicProps){
             setTriesMonster([...triesMonster, res.data]);
             setRefresh(!refresh);
 
-            setIndices(prev => 
-                prev.map((indice: Indice, index: number) => 
+            setIndices(prev =>
+                prev.map((indice: Indice, index: number) =>
                     res.data.try >= indice.unlock && index === res.data.indices[index].id ? {
                         ...indice,
                         img: res.data.indices[index].img
@@ -93,10 +148,7 @@ function Classic({ width }: ClassicProps){
             }));
 
             if(res.data.correct){
-                setCorrect(res.data);
-                setTimeout(() => {
-                    correct_ref.current?.scrollIntoView({ behavior: "smooth" });
-                }, 500);
+                handleCorrect(res.data, triesMonster);
             }
         })
     }
@@ -113,7 +165,7 @@ function Classic({ width }: ClassicProps){
 
             let triesJSON = savedClassic.tries;
             let resultat = [];
-            
+
             for(let i = 0; i < triesJSON.length; i++){
                 const res = await axios.post(`${apiUrl}/guessMonster`, {
                     monster_id: triesJSON[i],
@@ -124,13 +176,13 @@ function Classic({ width }: ClassicProps){
                 resultat.push(res.data);
                 if(i === triesJSON.length - 1){
                     setTriesMonster(resultat);
-                    
+
                     const lastIndices = resultat[resultat.length - 1].indices;
 
-                    setIndices(prev => 
+                    setIndices(prev =>
                         prev.map((indice: Indice, index: number) => {
                             const shouldUpdate = resultat[resultat.length - 1].try >= indice.unlock && index === lastIndices[index].id;
-                            
+
                             if (shouldUpdate) {
                                 // Create a new object with updated `img` property if the condition is met
                                 return {
@@ -143,13 +195,10 @@ function Classic({ width }: ClassicProps){
                             }
                         })
                     );
-                    
-    
+
+
                     if(resultat[resultat.length - 1].correct){
-                        setCorrect(resultat[resultat.length - 1]);
-                        setTimeout(() => {
-                            correct_ref.current?.scrollIntoView({ behavior: "smooth" });
-                        }, 500);
+                        handleCorrect(resultat[resultat.length - 1], resultat);
                     }
                 }
             }
@@ -161,6 +210,7 @@ function Classic({ width }: ClassicProps){
     }, []);
 
     return (
+        console.log(share),
         <div className="Classic">
 
             <Indices tryNumber={triesMonster.length} correct={correct !== undefined ? true : false} indices={indices} />
@@ -169,13 +219,13 @@ function Classic({ width }: ClassicProps){
                 triesMonster.length === 0 && (
                     <div className="explications">
                         <p>Devine le monstre de <br /> Summoners War du jour !</p>
-                        <span>Tu peux choisir entre chercher par famille de monstre, ou directement par monstre.</span> 
+                        <span>Tu peux choisir entre chercher par famille de monstre, ou directement par monstre.</span>
                         <span>Bonne chance !</span>
                     </div>
                 )
             }
 
-            <SearchBar 
+            <SearchBar
                 correct={correct}
                 input={input}
                 handleSubmitProposition={handleSubmitProposition}
@@ -185,24 +235,24 @@ function Classic({ width }: ClassicProps){
 
             {
                 triesMonster.length > 0 && (
-                    <TableClassic 
+                    <TableClassic
                         width={width}
                         triesMonster={triesMonster}
                     />
                 )
             }
-            
+
 
             {
                 correct !== undefined && (
                     <div className="correct" ref={correct_ref}>
                         <p>
-                            { 
+                            {
                                 tries.length === 1 ? "One Shot !" : `Bravo ! Vous avez trouvé le monstre en ${triesMonster.length} essais !`
                             }
                         </p>
                         <div className="resultat">
-                            <Monster 
+                            <Monster
                                 monster={{
                                     monster_id: correct.information.id_monster,
                                     monster_name: correct.information.name_monster,
@@ -212,7 +262,7 @@ function Classic({ width }: ClassicProps){
                             />
                             <div className="spans">
                                 <span>
-                                    {correct?.information.family_monster_name} 
+                                    {correct?.information.family_monster_name}
                                 </span>
                                 <span>
                                     {correct?.information.name_monster}
@@ -226,6 +276,28 @@ function Classic({ width }: ClassicProps){
                                 </p>
                             )
                         }
+                    </div>
+                )
+            }
+
+            {
+                correct !== undefined && (
+                    <div className="share correct">
+                        <p>
+                            {share.head}
+                        </p>
+                        <p>
+                            {
+                                share.body.reverse().map((line, index) => {
+                                    return (
+                                        <p key={index}>{line}</p>
+                                    )
+                                })
+                            }
+                        </p>
+                        <p>
+                            {share.foot}
+                        </p>
                     </div>
                 )
             }
