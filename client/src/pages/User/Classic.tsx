@@ -52,6 +52,7 @@ function Classic({ width }: ClassicProps){
         foot: url
     });
     const [isCopied, setIsCopied] = useState<boolean>(false);
+    const [position, setPosition] = useState<number>(0);
 
     const input = useRef<HTMLInputElement>(null);
     const correct_ref = useRef<HTMLDivElement>(null);
@@ -74,7 +75,7 @@ function Classic({ width }: ClassicProps){
     }
 
     useEffect(() => {
-        if(triesMonster[0]?.correct){ 
+        if(triesMonster[0]?.correct){
             setCorrect(correct);
             setTimeout(() => {
                 correct_ref.current?.scrollIntoView({ behavior: "smooth" });
@@ -144,7 +145,8 @@ function Classic({ width }: ClassicProps){
             Cookies.set("classic", JSON.stringify({
                 date: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).date : new Date(),
                 tries: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).tries : [],
-                indices: indices
+                indices: indices,
+                position: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).position : 0
             }));
 
             let triesJSON = Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).tries : [];
@@ -152,11 +154,20 @@ function Classic({ width }: ClassicProps){
             Cookies.set("classic", JSON.stringify({
                 date: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).date : new Date(),
                 tries: triesJSON,
-                indices: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).indices : []
+                indices: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).indices : [],
+                position: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).position : 0
             }));
 
             if(res.data.correct){
                 setCorrect(res.data);
+                setPosition(res.data.win_number);
+
+                Cookies.set("classic", JSON.stringify({
+                    date: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).date : new Date(),
+                    tries: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).tries : [],
+                    indices: Cookies.get("classic") ? JSON.parse(Cookies.get("classic")!).indices : [],
+                    position: res.data.win_number
+                }));
             }
         })
     }
@@ -166,7 +177,8 @@ function Classic({ width }: ClassicProps){
             Cookies.set("classic", JSON.stringify({
                 date: new Date(),
                 tries: [],
-                indices: initIndices
+                indices: initIndices,
+                position: 0
             }));
         } else {
             let savedClassic = JSON.parse(Cookies.get("classic")!);
@@ -207,6 +219,8 @@ function Classic({ width }: ClassicProps){
 
                     if(resultat[resultat.length - 1].correct){
                         setCorrect(resultat[resultat.length - 1]);
+                        console.log(savedClassic)
+                        setPosition(savedClassic.position);
                     }
                 }
             }
@@ -277,9 +291,9 @@ function Classic({ width }: ClassicProps){
                             </div>
                         </div>
                         {
-                            correct.win_number !== 0 && (
+                            position !== 0 && (
                                 <p>
-                                    Vous êtes le {correct?.win_number}{correct?.win_number === 1 ? "er" : "ème"} à trouver ce monstre !
+                                    Vous êtes le {position}{position === 1 ? "er" : "ème"} à trouver ce monstre !
                                 </p>
                             )
                         }
