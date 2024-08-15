@@ -122,7 +122,7 @@
     font-size: 30px;
 }
 
-.share .share-text p.share-array span:last-child {
+.share .share-text p.share-array span.other {
     font-size: 25px;
     font-weight: 900;
     letter-spacing: -1px;

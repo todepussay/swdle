@@ -312,7 +312,7 @@ function Classic({ width }: ClassicProps){
                                 {
                                     share.body.map((line, index) => {
                                         return (
-                                            <span key={index}>{line}</span>
+                                            <span className={index === 5 ? "other" : ""} key={index}>{line}</span>
                                         )
                                     })
                                 }
