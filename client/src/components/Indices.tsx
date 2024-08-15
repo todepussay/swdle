@@ -31,6 +31,7 @@ function Indices({ tryNumber, indices, correct }: IndicesProps) {
                             key={index}
                             indice={indice}
                             id={index}
+                            correct={correct}
                             tryNumber={tryNumber}
                             selected={correct || selected.includes(index)}
                             handleClick={() => handleClick(index)}

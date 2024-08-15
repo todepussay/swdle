@@ -10,13 +10,14 @@ interface IndiceProps {
     tryNumber: number;
     selected: boolean;
     handleClick: () => void;
+    correct: boolean;
 }
 
-function Indice({ indice, id, tryNumber, selected, handleClick }: IndiceProps) {
+function Indice({ indice, id, tryNumber, selected, handleClick, correct }: IndiceProps) {
     return (
         <div className="Indice">
             {
-                indice.unlock - tryNumber <= 0 ? (
+                (indice.unlock - tryNumber <= 0) || correct ? (
                     <div className="unlock">
                         <p>Indice {id + 1}</p>
                         <div className="revealZone">

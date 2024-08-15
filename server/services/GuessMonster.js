@@ -186,7 +186,7 @@ const guessMonster = async (req, res) => {
 
                     obj.information.image_monster_path = image_path;
 
-                    const indices = await generateIndices(dailyPick, number_try);
+                    const indices = await generateIndices(dailyPick, number_try, monster.id === dailyPick.id ? true : false);
 
                     obj.indices = indices;
 
@@ -198,11 +198,11 @@ const guessMonster = async (req, res) => {
     )
 }
 
-async function generateIndices(dailyPick, number_try){
+async function generateIndices(dailyPick, number_try, correct){
     return new Promise(async (resolve, reject) => {
         let indices = [];
 
-        if(number_try >= 6){
+        if(number_try >= 6 || correct){
             try {
                 let img = await getImage(dailyPick.indice_skill, "skills");
                 indices.push({
@@ -214,7 +214,7 @@ async function generateIndices(dailyPick, number_try){
             }
         } 
 
-        if(number_try >= 12){
+        if(number_try >= 12 || correct){
             try {
                 const image = await Jimp.read("./asset/monsters/" + dailyPick.image_filename);
                 const pixelSize = process.env.INDICE_2_PIXEL_SIZE;

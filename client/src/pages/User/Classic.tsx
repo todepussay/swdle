@@ -135,7 +135,7 @@ function Classic({ width }: ClassicProps){
 
             setIndices(prev =>
                 prev.map((indice: Indice, index: number) =>
-                    res.data.try >= indice.unlock && index === res.data.indices[index].id ? {
+                    (res.data.try >= indice.unlock && index === res.data.indices[index].id) || res.data.correct ? {
                         ...indice,
                         img: res.data.indices[index].img
                     } : indice
@@ -201,7 +201,7 @@ function Classic({ width }: ClassicProps){
 
                     setIndices(prev =>
                         prev.map((indice: Indice, index: number) => {
-                            const shouldUpdate = resultat[resultat.length - 1].try >= indice.unlock && index === lastIndices[index].id;
+                            const shouldUpdate = (resultat[resultat.length - 1].try >= indice.unlock && index === lastIndices[index].id) || resultat[resultat.length - 1].correct;
 
                             if (shouldUpdate) {
                                 // Create a new object with updated `img` property if the condition is met
@@ -219,7 +219,6 @@ function Classic({ width }: ClassicProps){
 
                     if(resultat[resultat.length - 1].correct){
                         setCorrect(resultat[resultat.length - 1]);
-                        console.log(savedClassic)
                         setPosition(savedClassic.position);
                     }
                 }
