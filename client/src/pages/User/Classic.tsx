@@ -6,25 +6,13 @@ import MonsterType from '@models/Monster';
 import GuessMonster from '@models/GuessMonster';
 import Indice from '@models/Indice';
 import '@styles/Classic.css';
-
-import star from "@assets/star.png";
-import star_awakened from "@assets/star-awakened.png";
-import fire from "@assets/fire.png";
-import water from "@assets/water.png";
-import wind from "@assets/wind.png";
-import light from "@assets/light.png";
-import dark from "@assets/dark.png";
-import attack from "@assets/attack.png";
-import defense from "@assets/defense.png";
-import support from "@assets/support.png";
-import hp from "@assets/hp.png";
-import indice_img from "@assets/indice.png";
-import monster from "@assets/monster.png";
+import { FaCopy } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import Indices from "@components/Indices";
-import useDebounce from '@services/useDebounce';
 import SearchBar from '@components/SearchBar';
 import TableClassic from '@components/TableClassic';
 import Monster from '@components/Monster';
+import { Tooltip } from "react-tooltip";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 const url = import.meta.env.VITE_URL;
@@ -54,7 +42,6 @@ interface Share {
 
 function Classic({ width }: ClassicProps){
 
-    const [tries, setTries] = useState<number[]>([]);
     const [triesMonster, setTriesMonster] = useState<GuessMonster[]>([]);
     const [indices, setIndices] = useState<Indice[]>(initIndices);
     const [correct, setCorrect] = useState<GuessMonster>();
@@ -64,52 +51,72 @@ function Classic({ width }: ClassicProps){
         body: [],
         foot: url
     });
+    const [isCopied, setIsCopied] = useState<boolean>(false);
 
     const input = useRef<HTMLInputElement>(null);
     const correct_ref = useRef<HTMLDivElement>(null);
 
-    const handleCorrect = (correct: GuessMonster, tries: GuessMonster[]) => {
-        setCorrect(correct);
-        setTimeout(() => {
-            correct_ref.current?.scrollIntoView({ behavior: "smooth" });
-        }, 500);
-
-        setShare(prev => ({
-            ...prev,
-            head: `J'ai trouvé le monstre #SWdle en ${triesMonster.length} coups !`
-        }));
-
-        let body = tries.map((tryMonster: GuessMonster) => {
-            return `${tryMonster.try}${
-                tryMonster.correct ? "🟩" : "🟥"
-            }${
-                tryMonster.information.natural_stars_good ? "🟩" : "🟥"
-            }${
-                tryMonster.information.second_awakened_good ? "🟩" : "🟥"
-            }${
-                tryMonster.information.element_good ? "🟩" : "🟥"
-            }${
-                tryMonster.information.archetype_good ? "🟩" : "🟥"
-            }${
-                tryMonster.information.buffs_good ? "🟩" :
-                tryMonster.information.buffs_partiel ? "🟨" : "🟥"
-            }${
-                tryMonster.information.debuffs_good ? "🟩" :
-                tryMonster.information.debuffs_partiel ? "🟨" : "🟥"
-            }${
-                tryMonster.information.family_good ? "🟩" : "🟥"
-            }${
-                tryMonster.information.leader_skill_good ? "🟩" : "🟥"
-            }${
-                tryMonster.information.fusion_food_good ? "🟩" : "🟥"
-            }`;
-        });
-
-        setShare(prev => ({
-            ...prev,
-            body: body
-        }));
+    const copyToClipboard = () => {
+        const str = generateTextForShare();
+        navigator.clipboard.writeText
+            ? navigator.clipboard.writeText(str)
+            : document.execCommand('copy', false, str);
+        setIsCopied(true);
     }
+
+    const shareOnTwitter = () => {
+        const url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(generateTextForShare());
+        window.open(url, "_blank");
+    }
+
+    const generateTextForShare = () => {
+        return `${share.head}\n${share.body.join("\n")}\n${share.foot}`;
+    }
+
+    useEffect(() => {
+        if(triesMonster[0]?.correct){ 
+            setCorrect(correct);
+            setTimeout(() => {
+                correct_ref.current?.scrollIntoView({ behavior: "smooth" });
+            }, 500);
+
+            let body = triesMonster.slice(0, 5).map((tryMonster: GuessMonster, index: number) => {
+                return `${
+                    tryMonster.correct ? "🟩" : "🟥"
+                }${
+                    tryMonster.information.natural_stars_good ? "🟩" : "🟥"
+                }${
+                    tryMonster.information.second_awakened_good ? "🟩" : "🟥"
+                }${
+                    tryMonster.information.element_good ? "🟩" : "🟥"
+                }${
+                    tryMonster.information.archetype_good ? "🟩" : "🟥"
+                }${
+                    tryMonster.information.buffs_good ? "🟩" :
+                    tryMonster.information.buffs_partiel ? "🟨" : "🟥"
+                }${
+                    tryMonster.information.debuffs_good ? "🟩" :
+                    tryMonster.information.debuffs_partiel ? "🟨" : "🟥"
+                }${
+                    tryMonster.information.family_good ? "🟩" : "🟥"
+                }${
+                    tryMonster.information.leader_skill_good ? "🟩" : "🟥"
+                }${
+                    tryMonster.information.fusion_food_good ? "🟩" : "🟥"
+                }`;
+            });
+
+            if(triesMonster.length > 5){
+                body.push(`+${triesMonster.length - 5} autres essais`);
+            }
+
+            setShare(prev => ({
+                ...prev,
+                head: `J'ai trouvé le monstre #SWdle en ${triesMonster.length} coups !`,
+                body: body
+            }));
+        }
+    }, [triesMonster]);
 
     const handleSubmitProposition = (id: number) => {
         if(width > 430){
@@ -121,7 +128,8 @@ function Classic({ width }: ClassicProps){
             number_try: triesMonster.length + 1
         })
         .then((res) => {
-            setTriesMonster([...triesMonster, res.data]);
+            let newTriesMonster = [...triesMonster, res.data];
+            setTriesMonster(newTriesMonster);
             setRefresh(!refresh);
 
             setIndices(prev =>
@@ -148,7 +156,7 @@ function Classic({ width }: ClassicProps){
             }));
 
             if(res.data.correct){
-                handleCorrect(res.data, triesMonster);
+                setCorrect(res.data);
             }
         })
     }
@@ -198,7 +206,7 @@ function Classic({ width }: ClassicProps){
 
 
                     if(resultat[resultat.length - 1].correct){
-                        handleCorrect(resultat[resultat.length - 1], resultat);
+                        setCorrect(resultat[resultat.length - 1]);
                     }
                 }
             }
@@ -210,7 +218,6 @@ function Classic({ width }: ClassicProps){
     }, []);
 
     return (
-        console.log(share),
         <div className="Classic">
 
             <Indices tryNumber={triesMonster.length} correct={correct !== undefined ? true : false} indices={indices} />
@@ -248,7 +255,7 @@ function Classic({ width }: ClassicProps){
                     <div className="correct" ref={correct_ref}>
                         <p>
                             {
-                                tries.length === 1 ? "One Shot !" : `Bravo ! Vous avez trouvé le monstre en ${triesMonster.length} essais !`
+                                triesMonster.length === 1 ? "One Shot !" : `Bravo ! Vous avez trouvé le monstre en ${triesMonster.length} essais !`
                             }
                         </p>
                         <div className="resultat">
@@ -283,21 +290,60 @@ function Classic({ width }: ClassicProps){
             {
                 correct !== undefined && (
                     <div className="share correct">
-                        <p>
-                            {share.head}
-                        </p>
-                        <p>
-                            {
-                                share.body.reverse().map((line, index) => {
-                                    return (
-                                        <p key={index}>{line}</p>
-                                    )
-                                })
-                            }
-                        </p>
-                        <p>
-                            {share.foot}
-                        </p>
+                        <div className="share-text">
+                            <p>
+                                {share.head}
+                            </p>
+                            <p className='share-array'>
+                                {
+                                    share.body.map((line, index) => {
+                                        return (
+                                            <span key={index}>{line}</span>
+                                        )
+                                    })
+                                }
+                            </p>
+                            <p>
+                                {share.foot}
+                            </p>
+                        </div>
+                        <div className="share-btns">
+                            <button
+                                className='copy'
+                                onClick={copyToClipboard}
+                                data-tooltip-id="tooltip-copy"
+                                data-tooltip-content="Copier dans le presse papier"
+                            >
+                                <FaCopy />
+                                <span>
+                                    {
+                                        isCopied ? "Copié !" : "Copier"
+                                    }
+                                </span>
+                            </button>
+                            <button
+                                className='twitter'
+                                onClick={shareOnTwitter}
+                                data-tooltip-id="tooltip-twitter"
+                                data-tooltip-content="Partager sur X/Twitter"
+                            >
+                                <FaXTwitter />
+                                <span>
+                                    Partager
+                                </span>
+                            </button>
+                            
+                            <Tooltip
+                                className='tooltip'
+                                place='top'
+                                id="tooltip-copy"
+                            />
+                            <Tooltip
+                                className='tooltip'
+                                place='top'
+                                id="tooltip-twitter"
+                            />
+                        </div>
                     </div>
                 )
             }

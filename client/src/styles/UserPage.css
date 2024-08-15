@@ -21,6 +21,12 @@
     --good: #4caf50;
     --bad: #f44336;
     --particiel: #d97706;
+    --twitter: #000000;
+    --twitter-hover: #0d0d0d;
+    --twitter-active: #1a1a1a;
+    --copy: #f1eecf;
+    --copy-hover: #efedda;
+    --copy-active: #ebe9d5;
 }
 
 body {

@@ -94,13 +94,88 @@
     font-size: 30px;
     font-weight: 900;
     letter-spacing: -1px;
-    -webkit-text-stroke-width: 1.5px;
+    -webkit-text-stroke-width: 1px;
     background: linear-gradient(180deg, var(--font-color-top) 20%, var(--font-color-bottom) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     -webkit-text-stroke-color: var(--font-shadow-color);
     line-height: 1;
     text-align: center;
+}
+
+.share .share-text {
+    width: 90%;
+}
+
+.share .share-text p:not(:first-child) {
+    margin-top: 10px;
+}
+
+.share .share-text p.share-array {
+    letter-spacing: -3px;
+    font-weight: normal;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    font-size: 30px;
+}
+
+.share .share-text p.share-array span:last-child {
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    -webkit-text-stroke-width: 1px;
+    background: linear-gradient(180deg, var(--font-color-top) 20%, var(--font-color-bottom) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-color: var(--font-shadow-color);
+    line-height: 1;
+}
+
+.share .share-btns {
+    width: 50%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 10px;
+}
+
+.share .share-btns button {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.share .share-btns .copy {
+    background-color: var(--copy);
+}
+
+.share .share-btns .copy:hover {
+    background-color: var(--copy-hover);
+}
+
+.share .share-btns .copy:active {
+    background-color: var(--copy-active);
+}
+
+.share .share-btns .twitter {
+    background-color: var(--twitter);
+    color: white;
+}
+
+.share .share-btns .twitter:hover {
+    background-color: var(--twitter-hover);
+}
+
+.share .share-btns .twitter:active {
+    background-color: var(--twitter-active);
 }
 
 @media (max-width: 1700px){
