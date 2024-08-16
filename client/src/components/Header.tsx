@@ -7,7 +7,6 @@ import obelix from "@assets/obelix.png";
 function Header(){
 
     const location = useLocation();
-    console.log(location);
 
     return (
         <header>
@@ -15,21 +14,21 @@ function Header(){
             <h1><Link to="/">SWdle</Link></h1>
             <img src={obelix} alt="Obelix 2" className="obelix" />
 
-            {/* {
-                onglet !== "home" && 
+            {
+                location.pathname !== "/" && 
                 <>
                     <h2>
                         {
-                            onglet === "classic" ? "Classique" :
-                            onglet === "skill" ? "Compétence" :
-                            onglet === "pixel" ? "Pixelisé" :
-                            onglet === "login" ? "Connexion" :
-                            onglet === "register" ? "Inscription" : ""
+                            location.pathname === "/classic" ? "Classique" :
+                            location.pathname === "/skill" ? "Compétence" :
+                            location.pathname === "/pixel" ? "Pixelisé" :
+                            location.pathname === "/login" ? "Connexion" :
+                            location.pathname === "/signin" ? "Inscription" : ""
                         }
                     </h2>
                     <img src={obelix} alt="Obelix 3" className="obelix" />
                 </>
-            } */}
+            }
         </header>
     )
 }

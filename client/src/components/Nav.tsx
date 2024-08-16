@@ -23,7 +23,7 @@ function Nav(){
                         <span>Classique</span>
                     </Link>
                 </li>
-                <li>
+                {/* <li>
                     <Link to={"/skill"}>
                         <img src={skill} alt="Skill" />
                         <span>Compétence</span>
@@ -34,7 +34,7 @@ function Nav(){
                         <img src={pixel} alt="Pixel" />
                         <span>Pixelisé</span>
                     </Link>
-                </li>
+                </li> */}
             </ul>
 
             <div className="tools">
