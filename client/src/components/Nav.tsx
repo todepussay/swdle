@@ -8,12 +8,7 @@ import monster from "@assets/monster.png";
 import skill from "@assets/skill.png";
 import pixel from "@assets/pixel.png";
 
-type NavProps = {
-    onglet: string;
-    setOnglet: React.Dispatch<React.SetStateAction<string>>;
-}
-
-function Nav({ onglet, setOnglet }: NavProps){
+function Nav(){
 
     const { logout, ifUserConnected, ifUserIsAdmin } = useContext(UserContext)!;
     const navigate = useNavigate();
@@ -23,19 +18,19 @@ function Nav({ onglet, setOnglet }: NavProps){
             <h2>Sélectionnez votre mode de jeu</h2>
             <ul>
                 <li>
-                    <Link className={onglet === "classic" ? "active" : ""} to={"/classic"} onClick={() => setOnglet("classic")}>
+                    <Link to={"/classic"}>
                         <img src={monster} alt="Classic" />
                         <span>Classique</span>
                     </Link>
                 </li>
                 <li>
-                    <Link className={onglet === "skill" ? "active" : ""} to={"/skill"} onClick={() => setOnglet("skill")}>
+                    <Link to={"/skill"}>
                         <img src={skill} alt="Skill" />
                         <span>Compétence</span>
                     </Link>
                 </li>
                 <li>
-                    <Link className={onglet === "pixel" ? "active" : ""} to={"/pixel"} onClick={() => setOnglet("pixel")}>
+                    <Link to={"/pixel"}>
                         <img src={pixel} alt="Pixel" />
                         <span>Pixelisé</span>
                     </Link>
@@ -47,13 +42,12 @@ function Nav({ onglet, setOnglet }: NavProps){
                     ifUserConnected() ? (
                         <Link className='tool' to="" onClick={() => {
                             logout();
-                            setOnglet("home");
                             navigate("/");
                         }} >
                             <CiLogout />
                         </Link>
                     ) : (
-                        <Link to={"/login"} onClick={() => setOnglet("login")} className="tool">
+                        <Link to={"/login"} className="tool">
                             <CiLogin />
                         </Link>
                     )
@@ -64,7 +58,7 @@ function Nav({ onglet, setOnglet }: NavProps){
                 </button>
                 {
                     ifUserIsAdmin() && (
-                        <Link to={"/admin"} onClick={() => setOnglet("admin")} className="tool">
+                        <Link to={"/admin"} className="tool">
                             <CiDatabase />
                         </Link>
                     )

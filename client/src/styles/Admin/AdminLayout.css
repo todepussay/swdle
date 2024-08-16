@@ -29,7 +29,7 @@
     --primary-active: #1976D2;
 }
 
-.AdminPanel {
+.AdminLayout {
     display: flex;
     flex-direction: row;
     max-width: 100vw;

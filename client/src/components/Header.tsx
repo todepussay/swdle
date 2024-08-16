@@ -1,22 +1,21 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import '@styles/Header.css';
 
 import obelix from "@assets/obelix.png";
 
-type HeaderProps = {
-    onglet: string;
-    setOnglet: React.Dispatch<React.SetStateAction<string>>;
-}
+function Header(){
 
-function Header({ onglet, setOnglet }: HeaderProps){
+    const location = useLocation();
+    console.log(location);
+
     return (
         <header>
             <img src={obelix} alt="Obelix 1" className="obelix" />
-            <h1><Link to="/" onClick={() => setOnglet("home")}>SWdle</Link></h1>
+            <h1><Link to="/">SWdle</Link></h1>
             <img src={obelix} alt="Obelix 2" className="obelix" />
 
-            {
+            {/* {
                 onglet !== "home" && 
                 <>
                     <h2>
@@ -30,7 +29,7 @@ function Header({ onglet, setOnglet }: HeaderProps){
                     </h2>
                     <img src={obelix} alt="Obelix 3" className="obelix" />
                 </>
-            }
+            } */}
         </header>
     )
 }

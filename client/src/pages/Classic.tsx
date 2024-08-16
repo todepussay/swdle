@@ -13,13 +13,10 @@ import SearchBar from '@components/SearchBar';
 import TableClassic from '@components/TableClassic';
 import Monster from '@components/Monster';
 import { Tooltip } from "react-tooltip";
+import Width from "@services/Width";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 const url = import.meta.env.VITE_URL;
-
-type ClassicProps = {
-    width: number;
-};
 
 const initIndices = [
     {
@@ -40,8 +37,9 @@ interface Share {
     foot: string;
 }
 
-function Classic({ width }: ClassicProps){
+function Classic(){
 
+    const width = Width();
     const [triesMonster, setTriesMonster] = useState<GuessMonster[]>([]);
     const [indices, setIndices] = useState<Indice[]>(initIndices);
     const [correct, setCorrect] = useState<GuessMonster>();

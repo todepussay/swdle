@@ -1,22 +1,17 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, Outlet } from "react-router-dom";
+import Cookies from "js-cookie";
+import axios from "axios";
+import corner from "@assets/corner.png";
 import Header from "@components/Header";
 import Nav from "@components/Nav";
-import Home from "@pages/User/Home";
-import Classic from "@pages/User/Classic";
-import Login from "@pages/User/Login";
-import Signin from "@pages/User/Signin";
-import corner from "@assets/corner.png";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import axios from "axios";
-import Cookies from "js-cookie";
-import Family from "@models/Family";
-import '@styles/UserPage.css';
+import "@styles/PublicLayout.css";
 
-const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = import.meta.env.VITE_API_URL
 
-function UserPage(){
 
-    const [onglet, setOnglet] = useState<string>('home');
+function PublicLayout(){
+    
     const [width, setWidth] = useState<number>(window.innerWidth);
     const navigate = useNavigate();
 
@@ -35,10 +30,13 @@ function UserPage(){
             setWidth(window.innerWidth);
         }
 
+        // Ajout de l'écouteur d'événements
+        window.addEventListener('resize', handleResize);
+            
         if(Cookies.get("classic")){
             
             let dateClassic : Date = new Date(JSON.parse(Cookies.get("classic")!).date);
-
+            
             axios.get(`${apiUrl}/verifyDaily`)
             .then((res) => {
                 if(!comparerDates(dateClassic, new Date(res.data))){
@@ -49,40 +47,32 @@ function UserPage(){
             })
         }
 
-        // Ajout de l'écouteur d'événements
-        window.addEventListener('resize', handleResize);
-            
         // Nettoyage de l'écouteur d'événements
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-
-    }, [onglet]);
-
+    }, []);
+    
     return (
         <div className="App">
             <div className="render">
-
+    
                 <img src={corner} alt="Corner top left" className="corner" id="corner-top-left" />
                 <img src={corner} alt="Corner top right" className="corner" id="corner-top-right" />
                 <img src={corner} alt="Corner bottom right" className="corner" id="corner-bottom-right" />
                 <img src={corner} alt="Corner bottom left" className="corner" id="corner-bottom-left" />
 
                 <div className="content">
-                    <Header onglet={onglet} setOnglet={setOnglet} />
+                    
+                    <Header />
 
                     {
-                        width > 430 && 
-                        <Nav onglet={onglet} setOnglet={setOnglet} />
+                        width > 430 &&
+                        <Nav />
                     }
 
                     <div className="game">
-                        <Routes>
-                            <Route path="/" element={<Home onglet={onglet} setOnglet={setOnglet} width={width} />} />
-                            <Route path="/classic" element={<Classic width={width} />} />
-                            <Route path="/login" element={<Login />} />
-                            <Route path="/signin" element={<Signin />} />
-                        </Routes>
+                        <Outlet />  
                     </div>
                 </div>
             </div>
@@ -90,4 +80,4 @@ function UserPage(){
     )
 }
 
-export default UserPage;
+export default PublicLayout;

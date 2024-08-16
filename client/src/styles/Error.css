@@ -1,0 +1,26 @@
+.Error {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Error p {
+    color: var(--font-color);
+    font-size: 40px;
+    -webkit-text-stroke-color: var(--font-shadow-color);
+    font-weight: 900;
+    letter-spacing: -1px;
+    -webkit-text-stroke-width: 2px;
+}
+
+.Error a {
+}
+
+@media (max-width: 430px) {
+    .Error {
+        width: 100%;
+        height: 100%;
+    }
+}

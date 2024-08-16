@@ -80,15 +80,14 @@ nav h2 {
 @media (max-width: 1700px) {
 
     ul li a img {
-        width: 70px;
-        height: 70px;
-    
+        width: 60px;
+        height: 60px;
     }
 
     ul li a span {
-        font-size: 25px;
+        font-size: 23px;
         font-weight: 800;
-        -webkit-text-stroke-width: 1.5px;
+        -webkit-text-stroke-width: 1px;
     }
 }
 
